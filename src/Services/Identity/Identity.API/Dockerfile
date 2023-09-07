@@ -18,7 +18,7 @@ COPY ["Shared/Shared.csproj", "Shared/"]
 RUN dotnet restore "Services/Identity/Identity.API/Identity.API.csproj"
 COPY ./Services/Identity/ ./Services/Identity/
 COPY ./Shared ./Shared
-WORKDIR "/src/Identity.API"
+WORKDIR "/src/Services/Identity/Identity.API"
 RUN dotnet build "Identity.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
