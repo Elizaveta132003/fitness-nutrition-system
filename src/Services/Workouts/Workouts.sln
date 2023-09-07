@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workouts.API", "Workouts.AP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workouts.DataAccess", "Workouts.DataAccess\Workouts.DataAccess.csproj", "{C7B04F76-CC15-4CB8-A8B4-7589EB071666}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workouts.BusinessLogic", "Workouts.BusinessLogic\Workouts.BusinessLogic.csproj", "{35B101EB-A323-42C4-A065-6358231245BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C7B04F76-CC15-4CB8-A8B4-7589EB071666}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7B04F76-CC15-4CB8-A8B4-7589EB071666}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7B04F76-CC15-4CB8-A8B4-7589EB071666}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B101EB-A323-42C4-A065-6358231245BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B101EB-A323-42C4-A065-6358231245BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B101EB-A323-42C4-A065-6358231245BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B101EB-A323-42C4-A065-6358231245BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
