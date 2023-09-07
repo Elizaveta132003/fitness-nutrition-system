@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Calories.DataAccess\Calories.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
