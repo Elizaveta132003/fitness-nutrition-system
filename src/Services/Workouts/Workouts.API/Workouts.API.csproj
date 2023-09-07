@@ -18,4 +18,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Workouts.BusinessLogic\Workouts.BusinessLogic.csproj" />
+  </ItemGroup>
+
 </Project>
