@@ -10,10 +10,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Calories.API/Calories.API.csproj", "Calories.API/"]
-RUN dotnet restore "Calories.API/Calories.API.csproj"
-COPY . .
-WORKDIR "/src/Calories.API"
+COPY ["Services/Calories/Calories.API/Calories.API.csproj", "Services/Calories/Calories.API/"]
+COPY ["Services/Calories/Calories.BusinessLogic/Calories.BusinessLogic.csproj","Services/Calories/Calories.BusinessLogic/"]
+COPY ["Services/Calories/Calories.DataAccess/Calories.DataAccess.csproj","Services/Calories/Calories.DataAccess/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+RUN dotnet restore "Services/Calories/Calories.API/Calories.API.csproj"
+COPY ./Services/Calories/ ./Services/Calories/
+COPY ./Shared/ ./Shared/
+WORKDIR "/src/Services/Calories/Calories.API"
 RUN dotnet build "Calories.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
