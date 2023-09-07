@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrition.Domain", "Nutriti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrition.Application", "Nutrition.Application\Nutrition.Application.csproj", "{FFAFF886-BCB0-4C51-BA3C-636223FF6257}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrition.Infrastructure", "Nutrition.Infrastructure\Nutrition.Infrastructure.csproj", "{1AF27949-E605-4C09-83AF-4E6B69E31BAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FFAFF886-BCB0-4C51-BA3C-636223FF6257}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFAFF886-BCB0-4C51-BA3C-636223FF6257}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFAFF886-BCB0-4C51-BA3C-636223FF6257}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AF27949-E605-4C09-83AF-4E6B69E31BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AF27949-E605-4C09-83AF-4E6B69E31BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AF27949-E605-4C09-83AF-4E6B69E31BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AF27949-E605-4C09-83AF-4E6B69E31BAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
