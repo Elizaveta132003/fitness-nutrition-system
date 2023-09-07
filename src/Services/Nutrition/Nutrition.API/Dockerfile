@@ -10,10 +10,15 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Nutrition.API/Nutrition.API.csproj", "Nutrition.API/"]
-RUN dotnet restore "Nutrition.API/Nutrition.API.csproj"
-COPY . .
-WORKDIR "/src/Nutrition.API"
+COPY ["Services/Nutrition/Nutrition.API/Nutrition.API.csproj", "Services/Nutrition/Nutrition.API/"]
+COPY ["Services/Nutrition/Nutrition.Application/Nutrition.Application.csproj", "Services/Nutrition/Nutrition.Application/"]
+COPY ["Services/Nutrition/Nutrition.Domain/Nutrition.Domain.csproj", "Services/Nutrition/Nutrition.Domain/"]
+COPY ["Services/Nutrition/Nutrition.Infrastructure/Nutrition.Infrastructure.csproj", "Services/Nutrition/Nutrition.Infrastructure/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+RUN dotnet restore "Services/Nutrition/Nutrition.API/Nutrition.API.csproj"
+COPY ./Services/Nutrition/ ./Services/Nutrition/
+COPY ./Shared ./Shared
+WORKDIR "/src/Services/Nutrition/Nutrition.API"
 RUN dotnet build "Nutrition.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
