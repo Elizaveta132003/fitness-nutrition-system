@@ -10,10 +10,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Workouts.API/Workouts.API.csproj", "Workouts.API/"]
-RUN dotnet restore "Workouts.API/Workouts.API.csproj"
-COPY . .
-WORKDIR "/src/Workouts.API"
+COPY ["Services/Workouts/Workouts.API/Workouts.API.csproj", "Services/Workouts/Workouts.API/"]
+COPY ["Services/Workouts/Workouts.BusinessLogic/Workouts.BusinessLogic.csproj", "Services/Workouts/Workouts.BusinessLogic/"]
+COPY ["Services/Workouts/Workouts.DataAccess/Workouts.DataAccess.csproj", "Services/Workouts/Workouts.DataAccess/"]
+COPY ["Shared/Shared.csproj", "Shared/"]
+RUN dotnet restore "Services/Workouts/Workouts.API/Workouts.API.csproj"
+COPY ./Services/Workouts/ ./Services/Workouts/
+COPY ./Shared/ ./Shared
+WORKDIR "/src/Services/Workouts/Workouts.API"
 RUN dotnet build "Workouts.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
