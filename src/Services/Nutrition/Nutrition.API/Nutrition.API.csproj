@@ -18,4 +18,9 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Nutrition.Application\Nutrition.Application.csproj" />
+    <ProjectReference Include="..\Nutrition.Infrastructure\Nutrition.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
