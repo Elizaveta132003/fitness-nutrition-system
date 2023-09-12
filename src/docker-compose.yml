@@ -6,41 +6,22 @@ services:
         build:
             context: "."
             dockerfile: /Services/Calories/Calories.API/Dockerfile
-        ports:
-            - 6001:80
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Docker
-        restart: unless-stopped
 
     nutrition:
         container_name: Nutrition
         build:
             context: "."
             dockerfile: /Services/Nutrition/Nutrition.API/Dockerfile
-        ports:
-            - 7001:80
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Docker
-        restart: unless-stopped
 
     workouts:
         container_name: Workouts
         build:
             context: "."
             dockerfile: /Services/Workouts/Workouts.API/Dockerfile
-        ports:
-            - 8001:80
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Docker
-        restart: unless-stopped
 
     identity:
         container_name: Identity
         build:
             context: "."
             dockerfile: /Services/Identity/Identity.API/Dockerfile
-        ports:
-            - 9001:80
-        environment:
-            - ASPNETCORE_ENVIRONMENT=Docker
-        restart: unless-stopped
+        

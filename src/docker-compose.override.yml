@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+    calories:
+        ports:
+            - 6001:80
+        restart: unless-stopped
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
+    nutrition:
+        ports:
+            - 7001:80
+        restart: unless-stopped
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
+    workouts:
+        ports:
+            - 8001:80
+        restart: unless-stopped
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
+    identity:
+        ports:
+            - 9001:80
+        restart: unless-stopped
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
