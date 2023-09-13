@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+    calories:
+        container_name: Calories
+        build:
+            context: "."
+            dockerfile: /Services/Calories/Calories.API/Dockerfile
+
+    nutrition:
+        container_name: Nutrition
+        build:
+            context: "."
+            dockerfile: /Services/Nutrition/Nutrition.API/Dockerfile
+
+    workouts:
+        container_name: Workouts
+        build:
+            context: "."
+            dockerfile: /Services/Workouts/Workouts.API/Dockerfile
+
+    identity:
+        container_name: Identity
+        build:
+            context: "."
+            dockerfile: /Services/Identity/Identity.API/Dockerfile
+        
