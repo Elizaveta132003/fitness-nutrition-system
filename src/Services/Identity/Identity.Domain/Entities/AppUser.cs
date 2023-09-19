@@ -3,11 +3,18 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Domain.Entities
 {
-    public class AppUser : IdentityUser<int>
+    /// <summary>
+    /// Represents a user entity.
+    /// </summary>
+    public class AppUser : IdentityUser<Guid>
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        /// <summary>
+        /// Gets or sets the date of birth of the user.
+        /// </summary>
         public DateTime DateOfBirth { get; set; }
+        /// <summary>
+        /// Gets or sets the gender of the user.
+        /// </summary>
         public Gender Gender { get; set; }
     }
 }
