@@ -29,7 +29,7 @@ namespace Identity.API.Controllers
         /// </summary>
         /// <param name="requestAppUserRegisterDto">The registration data of the user.</param>
         /// <returns>The registered user's information.</returns>
-        [HttpPost("sign-Up")]
+        [HttpPost("sign-up")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseAppUserRegisterDto>> RegisterUserAsync(RequestAppUserRegisterDto requestAppUserRegisterDto)
@@ -44,7 +44,7 @@ namespace Identity.API.Controllers
         /// </summary>
         /// <param name="requestAppUserAuthorizationDto">The user's login credentials.</param>
         /// <returns>The authorized user's information with a token.</returns>
-        [HttpPost("sign-In")]
+        [HttpPost("sign-in")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseAppUserAuthorizationDto>> LoginUserAsync(RequestAppUserAuthorizationDto requestAppUserAuthorizationDto)
