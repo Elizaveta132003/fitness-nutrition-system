@@ -34,19 +34,5 @@ namespace Identity.Infrastructure.DataContext
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
-        /// <summary>
-        /// Configures the database connection using the connection string from configuration.
-        /// </summary>
-        /// <param name="optionsBuilder">The DbContext options builder.</param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
-            }
-
-            base.OnConfiguring(optionsBuilder);
-        }
     }
 }
