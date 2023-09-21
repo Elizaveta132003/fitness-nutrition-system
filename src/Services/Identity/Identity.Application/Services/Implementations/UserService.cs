@@ -1,6 +1,7 @@
 ﻿using Identity.Application.Dtos.RequestDtos;
 using Identity.Application.Dtos.ResponseDtos;
 using Identity.Application.Exceptions;
+using Identity.Application.Helpers;
 using Identity.Application.Services.Interfaces;
 using Identity.Domain.Entities;
 using Mapster;
@@ -46,10 +47,9 @@ namespace Identity.Application.Services.Implementations
 
             if (!identityResult.Succeeded)
             {
-
                 _logger.LogInformation("User with id {Id} was not successfully created", user.Id);
 
-                throw new BadRequestException(identityResult.Errors.First().Code);
+                throw new BadRequestException(ErrorMessages.UserRegistrationFailed);
             }
 
             await _userManager.AddToRoleAsync(user, "user");
@@ -72,7 +72,7 @@ namespace Identity.Application.Services.Implementations
             {
                 _logger.LogError($"User with ID {id} not found.");
 
-                throw new NotFoundException("This id was not found.");
+                throw new NotFoundException(ErrorMessages.UserIdNotFound);
             }
 
             var responseModel = existingUser.Adapt<ResponseAppUserDto>();
@@ -115,14 +115,14 @@ namespace Identity.Application.Services.Implementations
 
             if (existingUser == null)
             {
-                throw new NotFoundException("User not found.");
+                throw new NotFoundException(ErrorMessages.UserNotFound);
             }
 
             var checkPassword = await _userManager.CheckPasswordAsync(existingUser, requestAppUserAuthorizationDto.Password);
 
             if (!checkPassword)
             {
-                throw new UnauthorizedAccessException("User password is incorrect.");
+                throw new UnauthorizedAccessException(ErrorMessages.IncorrectPassword);
             }
 
             var token = await _tokenService.CreateTokenAsync(existingUser);
