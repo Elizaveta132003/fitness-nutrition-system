@@ -1,4 +1,5 @@
 ﻿using Identity.Domain.Entities;
+using Identity.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Infrastructure.DataContext
@@ -39,7 +40,7 @@ namespace Identity.Infrastructure.DataContext
                 await SeedRoles();
             }
 
-            if (!_userManager.GetUsersInRoleAsync("admin").Result.Any())
+            if (!_userManager.GetUsersInRoleAsync(Role.admin.ToString()).Result.Any())
             {
                 await SeedUserRoles();
             }
@@ -55,7 +56,7 @@ namespace Identity.Infrastructure.DataContext
             {
                 UserName = "superadmin",
                 NormalizedUserName = "SUPERADMIN",
-                Gender = Domain.Enums.Gender.Female
+                Gender = Gender.Female
             };
 
             await _userManager.CreateAsync(superAdminUser, "SuperAdmin123$");
@@ -69,12 +70,12 @@ namespace Identity.Infrastructure.DataContext
         {
             var adminRole = new IdentityRole<Guid>()
             {
-                Name = "admin"
+                Name = Role.admin.ToString()
             };
 
             var userRole = new IdentityRole<Guid>()
             {
-                Name = "user"
+                Name = Role.user.ToString()
             };
 
             await _roleManager.CreateAsync(adminRole);
@@ -88,7 +89,7 @@ namespace Identity.Infrastructure.DataContext
         private async Task SeedUserRoles()
         {
             var superAdminUser = await _userManager.FindByNameAsync("superadmin");
-            var adminRole = await _roleManager.FindByNameAsync("admin");
+            var adminRole = await _roleManager.FindByNameAsync(Role.admin.ToString());
 
             if (superAdminUser != null && adminRole != null)
             {
