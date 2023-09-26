@@ -4,6 +4,9 @@ using System.Text.Json;
 
 namespace Identity.API.Middleware
 {
+    /// <summary>
+    /// Middleware for handling exceptions and returning appropriate HTTP responses.
+    /// </summary>
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
@@ -14,6 +17,12 @@ namespace Identity.API.Middleware
             _next = next;
             _logger = logger;
         }
+
+        /// <summary>
+        /// Invokes the middleware to handle exceptions.
+        /// </summary>
+        /// <param name="context">The current HTTP context.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -25,6 +34,13 @@ namespace Identity.API.Middleware
                 await HandleExceptionAsync(context, ex);
             }
         }
+
+        /// <summary>
+        ///  Handles an exception by returning an appropriate JSON response.
+        /// </summary>
+        /// <param name="context">The current HTTP context.</param>
+        /// <param name="exception">The exception to be handled.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             HttpStatusCode status = GetStatusCode(exception);
@@ -42,6 +58,12 @@ namespace Identity.API.Middleware
 
             return context.Response.WriteAsync(exceptionResult);
         }
+
+        /// <summary>
+        /// Determines the HTTP status code based on the type of exception.
+        /// </summary>
+        /// <param name="exception">The exception to analyze.</param>
+        /// <returns>The appropriate HTTP status code.</returns>
         private static HttpStatusCode GetStatusCode(Exception exception) => exception switch
         {
             BadRequestException => HttpStatusCode.BadRequest,

@@ -3,6 +3,9 @@ using Identity.Application.Dtos.RequestDtos;
 
 namespace Identity.Application.Validators.RequestValidators
 {
+    /// <summary>
+    /// Validator class for validating authorization request data for an application user.
+    /// </summary>
     public class RequestAppUserAuthorizationValidator
         :AbstractValidator<RequestAppUserAuthorizationDto>
     {

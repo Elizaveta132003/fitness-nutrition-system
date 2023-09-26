@@ -4,6 +4,9 @@ using Identity.Application.Validators.CustomValidators;
 
 namespace Identity.Application.Validators.RequestValidators
 {
+    /// <summary>
+    /// Validator class for validating registration request data for an application user.
+    /// </summary>
     public class RequestAppUserRegisterValidator: AbstractValidator<RequestAppUserRegisterDto>
     {
         public RequestAppUserRegisterValidator() 
@@ -25,6 +28,5 @@ namespace Identity.Application.Validators.RequestValidators
                 .IsInEnum()
                 .WithMessage("Gender must be one of the valid values: Male, Female, Other.");
         }
-
     }
 }

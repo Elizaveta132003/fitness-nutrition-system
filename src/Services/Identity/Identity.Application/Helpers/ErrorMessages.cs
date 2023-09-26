@@ -1,5 +1,8 @@
 ﻿namespace Identity.Application.Helpers
 {
+    /// <summary>
+    /// Helper class containing error message constants used in the application.
+    /// </summary>
     public static class ErrorMessages
     {
         public const string UserRegistrationFailed= "User registration failed.";
