@@ -1,7 +1,7 @@
-﻿using Identity.Application.Dtos.RequestDtos;
+﻿using Identity.API.Attributes;
+using Identity.Application.Dtos.RequestDtos;
 using Identity.Application.Dtos.ResponseDtos;
 using Identity.Application.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.API.Controllers
@@ -29,7 +29,7 @@ namespace Identity.API.Controllers
         /// </summary>
         /// <param name="requestAppUserRegisterDto">The registration data of the user.</param>
         /// <returns>The registered user's information.</returns>
-        [HttpPost("sign-up")]
+        [HttpPost("registration")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseAppUserRegisterDto>> RegisterUserAsync(RequestAppUserRegisterDto requestAppUserRegisterDto)
@@ -44,7 +44,7 @@ namespace Identity.API.Controllers
         /// </summary>
         /// <param name="requestAppUserAuthorizationDto">The user's login credentials.</param>
         /// <returns>The authorized user's information with a token.</returns>
-        [HttpPost("sign-in")]
+        [HttpPost("authorization")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseAppUserAuthorizationDto>> LoginUserAsync(RequestAppUserAuthorizationDto requestAppUserAuthorizationDto)
@@ -58,8 +58,8 @@ namespace Identity.API.Controllers
         /// Gets a list of users.
         /// </summary>
         /// <returns>A list of user information.</returns>
-        [Authorize(Roles = "admin")]
-        [HttpGet("getUsers")]
+        [Admin]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,7 +75,7 @@ namespace Identity.API.Controllers
         /// </summary>
         /// <param name="id">The ID of the user to delete.</param>
         /// <returns>The deleted user's information.</returns>
-        [Authorize(Roles = "admin")]
+        [Admin]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
