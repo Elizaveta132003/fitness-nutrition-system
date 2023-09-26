@@ -40,7 +40,7 @@ namespace Identity.Infrastructure.DataContext
                 await SeedRoles();
             }
 
-            if (!_userManager.GetUsersInRoleAsync(Role.admin.ToString()).Result.Any())
+            if (!(await _userManager.GetUsersInRoleAsync(Role.admin.ToString())).Any())
             {
                 await SeedUserRoles();
             }
