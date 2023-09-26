@@ -4,6 +4,7 @@ using Identity.Application.Exceptions;
 using Identity.Application.Helpers;
 using Identity.Application.Services.Interfaces;
 using Identity.Domain.Entities;
+using Identity.Domain.Enums;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -47,12 +48,12 @@ namespace Identity.Application.Services.Implementations
 
             if (!identityResult.Succeeded)
             {
-                _logger.LogInformation("User with id {Id} was not successfully created", user.Id);
+                _logger.LogInformation("User was not successfully created");
 
                 throw new BadRequestException(ErrorMessages.UserRegistrationFailed);
             }
 
-            await _userManager.AddToRoleAsync(user, "user");
+            await _userManager.AddToRoleAsync(user, Role.user.ToString());
             var result = user.Adapt<ResponseAppUserRegisterDto>();
 
             return result;
