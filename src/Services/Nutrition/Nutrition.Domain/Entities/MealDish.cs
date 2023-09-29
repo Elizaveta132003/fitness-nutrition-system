@@ -1,6 +1,6 @@
 ﻿namespace Nutrition.Domain.Entities
 {
-    public class MealDish
+    public class MealDish : BaseEntity
     {
         public Guid MealDetailId { get; set; }
         public MealDetail? MealDetail { get; set; }

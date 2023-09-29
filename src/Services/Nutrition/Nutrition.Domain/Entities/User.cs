@@ -1,8 +1,8 @@
 ﻿namespace Nutrition.Domain.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
-        public Guid Id { get; set; }
         public string Username { get; set; }
+        public FoodDiary? FoodDiary { get; set; }
     }
 }
