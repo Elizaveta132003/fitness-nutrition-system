@@ -7,7 +7,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Nutrition.Domain\Nutrition.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\FoodDiaries\Commands\" />
+    <Folder Include="Features\FoodDiaries\Queries\" />
+    <Folder Include="Features\Food\Queries\GetAllFood\" />
+    <Folder Include="Features\Food\Queries\GetByNameFood\" />
+    <Folder Include="Features\MealDetails\Commands\" />
+    <Folder Include="Features\MealDetails\Queries\" />
+    <Folder Include="Features\MealDishes\Commands\" />
+    <Folder Include="Features\MealDishes\Queries\" />
+    <Folder Include="Features\Users\Commands\UpdateUser\" />
+    <Folder Include="Features\Users\Queries\" />
   </ItemGroup>
 
 </Project>
