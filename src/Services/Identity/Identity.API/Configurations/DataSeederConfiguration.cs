@@ -16,11 +16,11 @@ namespace Identity.API.Configurations
         /// <param name="app">The application host.</param>
         public static void ApplyMigrations(this IHost app)
         {
-            app.MigrateDatabase<ApplicationDbContext>(async (context, serviceProvider) =>
+            app.MigrateDatabase<ApplicationDbContext>( (context, serviceProvider) =>
              {
                  var dataSeeder = new ApplicationContextSeed(serviceProvider.GetRequiredService<UserManager<AppUser>>(),
                      serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>());
-                 await dataSeeder.SeedAsync();
+                  dataSeeder.SeedAsync().Wait();
              });
         }
 
