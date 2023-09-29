@@ -2,10 +2,8 @@
 
 namespace Nutrition.Domain.Interfaces.IRepositories
 {
-    public interface IUserRepository
+    public interface IUserRepository:IBaseRepository<User>
     {
-        public Task CreateAsync(User user);
-        public void Update(User user);
-        public void Delete(User user);
+        public Task<bool> UserExistsAsync(string name, CancellationToken cancellationToken=default);
     }
 }

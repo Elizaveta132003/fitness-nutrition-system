@@ -2,12 +2,10 @@
 
 namespace Nutrition.Domain.Interfaces.IRepositories
 {
-    public interface IFoodRepository
+    public interface IFoodRepository:IBaseRepository<Food>
     {
-        public Task CreateAsync(Food food);
-        public void Update(Food food);  
-        public void Delete(Food food);  
-        public Task<IEnumerable<Food>> GetAllFoodAsync();
-        public Task<Food> GetByNameAsync(string name);
+        public Task<IEnumerable<Food>> GetAllFoodAsync(CancellationToken cancellationToken = default);
+        public Task<Food> GetByNameAsync(string name, CancellationToken cancellationToken = default);
+        public Task<bool> FoodExistsAsync(string name, CancellationToken cancellationToken = default);
     }
 }

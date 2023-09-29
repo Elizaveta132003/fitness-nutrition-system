@@ -2,8 +2,7 @@
 
 namespace Nutrition.Domain.Interfaces.IRepositories
 {
-    public interface IMealDetailRepository
+    public interface IMealDetailRepository:IBaseRepository<MealDetail>
     {
-        public Task CreateAsync(MealDetail mealDetail);
     }
 }

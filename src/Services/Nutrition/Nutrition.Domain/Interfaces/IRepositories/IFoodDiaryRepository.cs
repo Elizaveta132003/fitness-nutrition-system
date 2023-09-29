@@ -2,9 +2,7 @@
 
 namespace Nutrition.Domain.Interfaces.IRepositories
 {
-    public interface IFoodDiaryRepository
+    public interface IFoodDiaryRepository:IBaseRepository<FoodDiary>
     {
-        public Task CreateAsync(FoodDiary foodDiary);
-        public void Delete(FoodDiary foodDiary);
     }
 }
