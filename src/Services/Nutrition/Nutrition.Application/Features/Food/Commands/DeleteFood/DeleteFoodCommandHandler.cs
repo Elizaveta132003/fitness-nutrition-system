@@ -16,12 +16,12 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
             _foodRepository = foodRepository;
         }
 
-        public async Task<FoodResponseDto> Handle(DeleteFoodCommand request, 
+        public async Task<FoodResponseDto> Handle(DeleteFoodCommand request,
             CancellationToken cancellationToken)
         {
-            var foundFood = await _foodRepository.GetByIdAsync(request.id, cancellationToken);
+            var foundFood = await _foodRepository.GetByIdAsync(request.Id, cancellationToken);
 
-            if(foundFood is null)
+            if (foundFood is null)
             {
                 throw new NotFoundException(FoodErrorMessages.ProductNotFound);
             }
@@ -30,7 +30,7 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
 
             await _foodRepository.SaveChangesAsync(cancellationToken);
 
-            var foodResponseDto=foundFood.Adapt<FoodResponseDto>();
+            var foodResponseDto = foundFood.Adapt<FoodResponseDto>();
 
             return foodResponseDto;
         }

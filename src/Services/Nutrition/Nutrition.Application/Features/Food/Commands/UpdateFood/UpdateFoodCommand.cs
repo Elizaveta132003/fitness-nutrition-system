@@ -4,5 +4,5 @@ using Nutrition.Application.Dtos.ResponseDtos;
 
 namespace Nutrition.Application.Features.Food.Commands.UpdateFood
 {
-    public record UpdateFoodCommand(FoodRequestDto FoodRequestDto):IRequest<FoodResponseDto>;
+    public record UpdateFoodCommand(FoodRequestDto FoodRequestDto) : IRequest<FoodResponseDto>;
 }

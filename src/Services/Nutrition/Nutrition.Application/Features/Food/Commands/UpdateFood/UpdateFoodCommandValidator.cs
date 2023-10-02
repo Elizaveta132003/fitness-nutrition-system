@@ -3,7 +3,7 @@ using Nutrition.Application.Validators.RequestValidators;
 
 namespace Nutrition.Application.Features.Food.Commands.UpdateFood
 {
-    public class UpdateFoodCommandValidator: AbstractValidator<UpdateFoodCommand>
+    public class UpdateFoodCommandValidator : AbstractValidator<UpdateFoodCommand>
     {
         public UpdateFoodCommandValidator()
         {
