@@ -3,7 +3,7 @@ using Nutrition.Application.Dtos.RequestDtos;
 
 namespace Nutrition.Application.Validators.RequestValidators
 {
-    public class UserRequestValidator:AbstractValidator<UserRequestDto>
+    public class UserRequestValidator : AbstractValidator<UserRequestDto>
     {
         public UserRequestValidator()
         {
