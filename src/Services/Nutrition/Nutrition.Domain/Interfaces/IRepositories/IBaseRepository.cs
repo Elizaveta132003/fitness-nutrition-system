@@ -4,9 +4,9 @@ namespace Nutrition.Domain.Interfaces.IRepositories
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
-        Task CreateAsync(T entity, CancellationToken cancellationToken = default);
-        Task UpdateAsync(T entity, CancellationToken cancellationToken = default);  
-        Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
+        void Create(T entity);
+        void Update(T entity);
+        void Delete(T entity);
         Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
