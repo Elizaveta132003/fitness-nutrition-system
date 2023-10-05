@@ -1,23 +1,38 @@
+using FluentValidation;
+using Nutrition.API.Configurations;
+using Nutrition.Application.Extensions;
+using Nutrition.Application.Validators.RequestValidators;
+using Nutrition.Infrastructure.Data.DataContext;
+using Nutrition.Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddValidatorsFromAssemblyContaining<FoodRequestValidator>();
+builder.Services.ConfigureMediatR();
+builder.Services.ApplyMigrations(builder.Configuration);
+builder.Services.AddDbContext<NutritionDbContext>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGenConfiguration();
+builder.Services.AddConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(s =>
+    {
+        s.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition API v1");
+    });
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
