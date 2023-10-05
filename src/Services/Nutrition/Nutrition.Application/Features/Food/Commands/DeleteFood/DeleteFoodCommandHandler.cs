@@ -26,7 +26,7 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
                 throw new NotFoundException(FoodErrorMessages.ProductNotFound);
             }
 
-            await _foodRepository.DeleteAsync(foundFood, cancellationToken);
+            _foodRepository.Delete(foundFood);
 
             await _foodRepository.SaveChangesAsync(cancellationToken);
 

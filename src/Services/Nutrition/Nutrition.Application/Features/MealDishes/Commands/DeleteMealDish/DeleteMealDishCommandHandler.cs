@@ -26,7 +26,7 @@ namespace Nutrition.Application.Features.MealDishes.Commands.DeleteMealDish
                 throw new NotFoundException(MealDishErrorMessages.MealDishNotFound);
             }
 
-            await _mealDishRepository.DeleteAsync(foundMealDish, cancellationToken);
+            _mealDishRepository.Delete(foundMealDish);
 
             await _mealDishRepository.SaveChangesAsync(cancellationToken);
 

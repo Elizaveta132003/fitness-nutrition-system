@@ -24,7 +24,7 @@ namespace Nutrition.Application.Features.MealDishes.Commands.CreateMealDish
             var mealDish = request.MealDishRequestDto.Adapt<MealDish>();
             mealDish.Id = Guid.NewGuid();
 
-            await _mealDishRepository.CreateAsync(mealDish, cancellationToken);
+            _mealDishRepository.Create(mealDish);
 
             var isFoundMealDetail = await _mealDetailRepository.MealDetailExistsAsync(mealDish.MealDetail.Date,
                 mealDish.MealDetail.MealType, cancellationToken);
@@ -32,7 +32,7 @@ namespace Nutrition.Application.Features.MealDishes.Commands.CreateMealDish
             if (!isFoundMealDetail)
             {
                 mealDish.MealDetail.Id = Guid.NewGuid();
-                await _mealDetailRepository.CreateAsync(mealDish.MealDetail, cancellationToken);
+                _mealDetailRepository.Create(mealDish.MealDetail);
             }
 
             await _mealDetailRepository.SaveChangesAsync(cancellationToken);

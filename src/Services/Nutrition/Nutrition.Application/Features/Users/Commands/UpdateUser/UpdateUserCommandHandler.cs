@@ -30,7 +30,7 @@ namespace Nutrition.Application.Features.Users.Commands.UpdateUser
 
             var user = request.UserRequestDto.Adapt<User>();
 
-            await _userRepository.UpdateAsync(user, cancellationToken);
+            _userRepository.Update(user);
 
             await _userRepository.SaveChangesAsync(cancellationToken);
 

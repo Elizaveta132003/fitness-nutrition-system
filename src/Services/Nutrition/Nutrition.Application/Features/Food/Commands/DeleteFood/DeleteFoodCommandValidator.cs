@@ -6,7 +6,7 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
     {
         public DeleteFoodCommandValidator()
         {
-            RuleFor(x => x.id)
+            RuleFor(x => x.Id)
                 .NotEmpty()
                 .NotNull();
         }

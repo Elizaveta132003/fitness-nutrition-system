@@ -26,7 +26,7 @@ namespace Nutrition.Application.Features.Users.Commands.DeleteUser
                 throw new NotFoundException(UserErrorMessages.UserNotFound);
             }
 
-            await _userRepository.DeleteAsync(foundUser, cancellationToken);
+            _userRepository.Delete(foundUser);
 
             await _userRepository.SaveChangesAsync(cancellationToken);
 

@@ -22,14 +22,14 @@ namespace Nutrition.Application.Features.Food.Commands.UpdateFood
             var isFoundFood = await _foodRepository.FoodExistsAsync(
                 request.FoodRequestDto.Name, cancellationToken);
 
-            if (!isFoundFood)
+            if (isFoundFood)
             {
-                throw new NotFoundException(FoodErrorMessages.ProductNotFound);
+                throw new NotFoundException(FoodErrorMessages.ProductAlreadyExists);
             }
 
             var food = request.FoodRequestDto.Adapt<Domain.Entities.Food>();
 
-            await _foodRepository.UpdateAsync(food, cancellationToken);
+            _foodRepository.Update(food);
 
             await _foodRepository.SaveChangesAsync(cancellationToken);
 

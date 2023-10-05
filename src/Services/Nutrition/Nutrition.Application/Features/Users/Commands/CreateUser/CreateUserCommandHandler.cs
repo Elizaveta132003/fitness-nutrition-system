@@ -19,10 +19,10 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
             _foodDiaryRepository = foodDiaryRepository;
         }
 
-        public async Task<UserResponseDto> Handle(CreateUserCommand request, 
+        public async Task<UserResponseDto> Handle(CreateUserCommand request,
             CancellationToken cancellationToken)
         {
-            var isFoundUser = await _userRepository.UserExistsAsync(request.UserRequestDto.Username, 
+            var isFoundUser = await _userRepository.UserExistsAsync(request.UserRequestDto.Username,
                 cancellationToken);
 
             if (isFoundUser)
@@ -33,7 +33,7 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
             var user = request.UserRequestDto.Adapt<User>();
             user.Id = Guid.NewGuid();
 
-            await _userRepository.CreateAsync(user, cancellationToken);
+            _userRepository.Create(user);
 
             var foodDiary = new FoodDiary()
             {
@@ -41,11 +41,11 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
                 UserId = user.Id
             };
 
-            await _foodDiaryRepository.CreateAsync(foodDiary, cancellationToken);
+            _foodDiaryRepository.Create(foodDiary);
 
-            await _foodDiaryRepository.SaveChangesAsync(cancellationToken); 
+            await _foodDiaryRepository.SaveChangesAsync(cancellationToken);
 
-            var userResponseDto=user.Adapt<UserResponseDto>();
+            var userResponseDto = user.Adapt<UserResponseDto>();
 
             return userResponseDto;
             //TODO: Где будет обрабатываться что если юзер не создался или если не создалась foodDiary то будет откат всей транзакции
