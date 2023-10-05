@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Nutrition.API.Configurations
 {
@@ -6,32 +7,17 @@ namespace Nutrition.API.Configurations
     {
         public static void AddSwaggerGenConfiguration(this IServiceCollection services)
         {
-            services.AddSwaggerGen(swaggerGenOptions =>
+            services.AddSwaggerGen(options =>
             {
-                swaggerGenOptions.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
                     Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
                 });
-                swaggerGenOptions.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-                swaggerGenOptions.EnableAnnotations();
+
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
             });
         }
     }
