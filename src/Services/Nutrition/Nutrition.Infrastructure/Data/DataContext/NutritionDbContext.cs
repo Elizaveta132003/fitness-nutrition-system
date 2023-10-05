@@ -4,12 +4,12 @@ using System.Reflection;
 
 namespace Nutrition.Infrastructure.Data.DataContext
 {
-    public class NutritionDbContext:DbContext
+    public class NutritionDbContext : DbContext
     {
         public virtual DbSet<Food> Foods { get; set; }
-        public virtual DbSet<FoodDiary> FoodDiarys { get;set; }
+        public virtual DbSet<FoodDiary> FoodDiaries { get; set; }
         public virtual DbSet<MealDetail> MealDetails { get; set; }
-        public virtual DbSet<MealDish> MealDishes { get; set;}
+        public virtual DbSet<MealDish> MealDishes { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         public NutritionDbContext(DbContextOptions<NutritionDbContext> options) : base(options)
