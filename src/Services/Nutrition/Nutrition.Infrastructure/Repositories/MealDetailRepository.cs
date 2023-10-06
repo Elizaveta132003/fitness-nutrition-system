@@ -14,9 +14,16 @@ namespace Nutrition.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<MealDetail> GetByDateAndMealTypeAsync(DateTime date, MealType type,
+            CancellationToken cancellationToken = default)
+            => await _context.MealDetails
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.Date == date && m.MealType == type);
+
         public async Task<bool> MealDetailExistsAsync(DateTime date, MealType mealType,
             CancellationToken cancellationToken = default)
-            => await _context.MealDetails.
-            AnyAsync(m => m.Date == date && m.MealType == mealType, cancellationToken);
+            => await _context.MealDetails
+            .AsNoTracking()
+            .AnyAsync(m => m.Date == date && m.MealType == mealType, cancellationToken);
     }
 }

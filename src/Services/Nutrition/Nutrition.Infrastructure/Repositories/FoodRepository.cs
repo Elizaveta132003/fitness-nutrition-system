@@ -14,12 +14,18 @@ namespace Nutrition.Infrastructure.Repositories
         }
 
         public async Task<bool> FoodExistsAsync(string name, CancellationToken cancellationToken = default)
-            => await _context.Foods.AnyAsync(f => f.Name == name, cancellationToken);
+            => await _context.Foods
+            .AsNoTracking()
+            .AnyAsync(f => f.Name == name, cancellationToken);
 
         public async Task<IEnumerable<Food>> GetAllFoodAsync(CancellationToken cancellationToken = default)
-            => await _context.Foods.ToListAsync(cancellationToken);
+            => await _context.Foods
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
         public async Task<Food> GetByNameAsync(string name, CancellationToken cancellationToken = default)
-            => await _context.Foods.FirstOrDefaultAsync(f => f.Name == name, cancellationToken);
+            => await _context.Foods
+            .AsNoTracking()
+            .FirstOrDefaultAsync(f => f.Name == name, cancellationToken);
     }
 }

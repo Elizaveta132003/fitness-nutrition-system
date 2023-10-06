@@ -15,6 +15,8 @@ namespace Nutrition.Infrastructure.Repositories
 
         public async Task<bool> UserExistsAsync(string name,
             CancellationToken cancellationToken = default)
-            => await _context.Users.AnyAsync(u => u.Username == name, cancellationToken);
+            => await _context.Users
+            .AsNoTracking()
+            .AnyAsync(u => u.Username == name, cancellationToken);
     }
 }

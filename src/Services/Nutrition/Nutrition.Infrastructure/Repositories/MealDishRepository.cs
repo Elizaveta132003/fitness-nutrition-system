@@ -18,6 +18,7 @@ namespace Nutrition.Infrastructure.Repositories
             Guid userId, DateTime date, MealType mealType,
             CancellationToken cancellationToken = default)
             => await _context.MealDishes
+            .AsNoTracking()
             .Where(md => md.MealDetail.FoodDiary.UserId == userId && md.MealDetail.Date == date
             && md.MealDetail.MealType == mealType)
             .ToListAsync(cancellationToken);
@@ -25,6 +26,7 @@ namespace Nutrition.Infrastructure.Repositories
         public async Task<IEnumerable<MealDish>> GetAllMealDishesByUserIdAndDateAsync(
             Guid userId, DateTime date, CancellationToken cancellationToken = default)
             => await _context.MealDishes
+            .AsNoTracking()
             .Where(md => md.MealDetail.FoodDiary.UserId == userId && md.MealDetail.Date == date)
             .ToListAsync(cancellationToken);
     }
