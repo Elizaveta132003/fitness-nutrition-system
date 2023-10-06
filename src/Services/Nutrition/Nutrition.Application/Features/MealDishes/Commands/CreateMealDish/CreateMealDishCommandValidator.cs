@@ -10,7 +10,7 @@ namespace Nutrition.Application.Features.MealDishes.Commands.CreateMealDish
             RuleFor(x => x.MealDishRequestDto)
                 .SetValidator(new MealDishRequestValidator());
 
-            RuleFor(x => x.MealDishRequestDto.MealDetailRequestDto)
+            RuleFor(x => x.MealDishRequestDto.MealDetail)
                 .SetValidator(new MealDetailRequestValidator());
         }
     }
