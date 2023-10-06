@@ -8,6 +8,7 @@ using Nutrition.Application.Features.Food.Commands.CreateFood;
 using Nutrition.Application.Features.Food.Commands.DeleteFood;
 using Nutrition.Application.Features.Food.Commands.UpdateFood;
 using Nutrition.Application.Features.Food.Queries.GetAllFood;
+using Nutrition.Application.Features.Food.Queries.GetByNameFood;
 
 namespace Nutrition.API.Controllers
 {
@@ -72,6 +73,19 @@ namespace Nutrition.API.Controllers
         public async Task<ActionResult<IEnumerable<FoodResponseDto>>> GetAllFoodAsync()
         {
             var query = new GetAllFoodQuery();
+            var result = await _meadiator.Send(query);
+
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("{name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<FoodResponseDto>> GetByNameFoodAsync(string name)
+        {
+            var query = new GetByNameFoodQuery(name);
             var result = await _meadiator.Send(query);
 
             return Ok(result);
