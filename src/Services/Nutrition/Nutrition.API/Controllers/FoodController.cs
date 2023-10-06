@@ -52,14 +52,14 @@ namespace Nutrition.API.Controllers
         }
 
         [Admin]
-        [HttpPut]
+        [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<FoodResponseDto>> UpdateFoodAsync(FoodRequestDto foodRequestDto)
+        public async Task<ActionResult<FoodResponseDto>> UpdateFoodAsync(Guid id, FoodRequestDto foodRequestDto)
         {
-            var command = new UpdateFoodCommand(foodRequestDto);
+            var command = new UpdateFoodCommand(id, foodRequestDto);
             var result = await _meadiator.Send(command);
 
             return Ok(result);
