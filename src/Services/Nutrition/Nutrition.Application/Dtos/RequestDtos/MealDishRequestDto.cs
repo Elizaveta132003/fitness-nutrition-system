@@ -2,8 +2,7 @@
 {
     public class MealDishRequestDto
     {
-        public Guid MealDetailId { get; set; }
-        public MealDetailRequestDto? MealDetailRequestDto { get; set; }
+        public MealDetailRequestDto? MealDetail { get; set; }
         public Guid FoodId { get; set; }
         public double ServingSize { get; set; }
     }
