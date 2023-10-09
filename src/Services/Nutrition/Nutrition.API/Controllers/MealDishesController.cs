@@ -64,14 +64,14 @@ namespace Nutrition.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("{userId:guid}/{date}/{mealType}")]
+        [HttpGet("{userId:guid}/{date}/{type}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<MealDishResponseDto>>> GetAllMealDishesByUserIdAndDateAndMealType(
-           Guid userId, DateTime date, MealType mealType)
+           Guid userId, DateTime date, MealType type)
         {
-            var query = new GetAllMealDishesByUserIdAndDateAndMealTypeQuery(userId, date, mealType);
+            var query = new GetAllMealDishesByUserIdAndDateAndMealTypeQuery(userId, date, type);
             var result = await _mediator.Send(query);
 
             return Ok(result);
