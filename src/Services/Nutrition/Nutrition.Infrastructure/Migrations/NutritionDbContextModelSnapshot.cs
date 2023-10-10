@@ -171,7 +171,8 @@ namespace Nutrition.Infrastructure.Migrations
 
             modelBuilder.Entity("Nutrition.Domain.Entities.User", b =>
                 {
-                    b.Navigation("FoodDiary");
+                    b.Navigation("FoodDiary")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
