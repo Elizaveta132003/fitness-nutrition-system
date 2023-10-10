@@ -48,7 +48,6 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
             var userResponseDto = user.Adapt<UserResponseDto>();
 
             return userResponseDto;
-            //TODO: Где будет обрабатываться что если юзер не создался или если не создалась foodDiary то будет откат всей транзакции
         }
     }
 }
