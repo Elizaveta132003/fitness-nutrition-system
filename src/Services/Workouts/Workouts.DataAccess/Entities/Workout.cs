@@ -2,7 +2,6 @@
 {
     public class Workout : BaseEntity
     {
-        public Guid Id { get; set; }
         public Guid ExercisesDiaryId { get; set; }
         public ExercisesDiary? ExercisesDiary { get; set; }
         public DateTime Date { get; set; }

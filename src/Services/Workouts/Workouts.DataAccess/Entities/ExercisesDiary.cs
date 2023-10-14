@@ -4,5 +4,6 @@
     {
         public Guid UserId { get; set; }
         public User? User { get; set; }
+        public List<Workout> Workouts { get; set; }
     }
 }
