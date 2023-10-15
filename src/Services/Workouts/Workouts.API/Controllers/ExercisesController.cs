@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Workouts.API.Attributes;
 using Workouts.BusinessLogic.Dtos.RequestDtos;
 using Workouts.BusinessLogic.Dtos.ResponseDtos;
 using Workouts.BusinessLogic.Services.Interfaces;
@@ -16,7 +18,7 @@ namespace Workouts.API.Controllers
             _exerciseService = exerciseService;
         }
 
-        //[Admin]
+        [Admin]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -30,7 +32,7 @@ namespace Workouts.API.Controllers
             return Ok(result);
         }
 
-        //[Admin]
+        [Admin]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -44,7 +46,7 @@ namespace Workouts.API.Controllers
             return Ok(result);
         }
 
-        //[Admin]
+        [Admin]
         [HttpPut("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -59,7 +61,7 @@ namespace Workouts.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -71,7 +73,7 @@ namespace Workouts.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

@@ -18,7 +18,7 @@ namespace Workouts.API.Controllers
             _workoutExerciseService = workoutExerciseService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -33,7 +33,7 @@ namespace Workouts.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -47,7 +47,7 @@ namespace Workouts.API.Controllers
             return Ok(result);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{userId:guid}/{date}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
