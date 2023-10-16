@@ -10,12 +10,10 @@ namespace Calories.DataAccess.Extensions
     {
         public static void ConfigureMongo(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IMongoClient>(sp => new MongoClient(configuration["MongoSettings:Connection"]));
-            services.AddScoped<IMongoDatabase>(sp =>
-            {
-                var client = sp.GetRequiredService<IMongoClient>();
-                return client.GetDatabase(configuration.GetValue<string>("MongoSettings:DatabaseName"));
-            });
+            var mongoClient = new MongoClient(configuration["MongoSettings:Connection"]);
+            var database = mongoClient.GetDatabase(configuration.GetValue<string>("MongoSettings:DatabaseName"));
+
+            services.AddScoped<IMongoDatabase>(provider => database);
 
             services.AddScoped<ICaloriesTrackingRepository, CaloriesTrackingRepository>();
         }
