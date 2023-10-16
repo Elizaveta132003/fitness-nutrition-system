@@ -9,7 +9,8 @@ namespace Nutrition.Application.Extensions
     {
         public static void ConfigureMediatR(this IServiceCollection services)
         {
-            services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(GetAllFoodQuery).Assembly))
+            services.AddMediatR(mediatRServiceConfiguration =>
+            mediatRServiceConfiguration.RegisterServicesFromAssembly(typeof(GetAllFoodQuery).Assembly))
                 .AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         }
     }

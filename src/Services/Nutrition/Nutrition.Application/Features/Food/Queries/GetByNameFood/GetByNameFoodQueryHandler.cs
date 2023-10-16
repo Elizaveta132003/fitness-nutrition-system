@@ -19,7 +19,8 @@ namespace Nutrition.Application.Features.Food.Queries.GetByNameFood
         public async Task<FoodResponseDto> Handle(GetByNameFoodQuery request,
             CancellationToken cancellationToken)
         {
-            var existingFood = await _foodRepository.GetByNameAsync(request.Name, cancellationToken);
+            var existingFood = await _foodRepository.GetOneByAsync(food => food.Name == request.Name,
+                cancellationToken);
 
             if (existingFood is null)
             {

@@ -21,8 +21,11 @@ namespace Nutrition.Application.Features.MealDishes.Queries.GetAllMealDishesByUs
             (GetAllMealDishesByUserIdAndDateAndMealTypeQuery request,
             CancellationToken cancellationToken)
         {
-            var foundMealDishes = await _mealDishRepository.GetAllMealDishesByUserIdAndDateAndMealTypeAsync(
-                request.UserId, request.Date, request.MealType, cancellationToken);
+            var foundMealDishes = await _mealDishRepository.GetAllByAsync(mealDish =>
+            mealDish.MealDetail.FoodDiary.UserId == request.UserId &&
+            mealDish.MealDetail.Date == request.Date &&
+            mealDish.MealDetail.MealType == request.MealType,
+            cancellationToken);
 
             if (!foundMealDishes.Any())
             {

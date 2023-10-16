@@ -2,6 +2,7 @@
 using Nutrition.Domain.Entities;
 using Nutrition.Domain.Interfaces.IRepositories;
 using Nutrition.Infrastructure.Data.DataContext;
+using System.Linq.Expressions;
 
 namespace Nutrition.Infrastructure.Repositories
 {
@@ -15,20 +16,34 @@ namespace Nutrition.Infrastructure.Repositories
         }
 
         public void Create(T entity)
-            => _context.Add(entity);
+        {
+            _context.Add(entity);
+        }
 
         public void Delete(T entity)
-            => _context.Remove(entity);
+        {
+            _context.Remove(entity);
+        }
 
-        public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<T>> GetAllByAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
             => await _context.Set<T>()
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            .Where(predicate)
+            .ToListAsync(cancellationToken);
+
+        public async Task<T> GetOneByAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+            => await _context.Set<T>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(predicate, cancellationToken);
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
-            => await _context.SaveChangesAsync(cancellationToken);
+        {
+            await _context.SaveChangesAsync(cancellationToken);
+        }
 
         public void Update(T entity)
-            => _context.Update(entity);
+        {
+            _context.Update(entity);
+        }
     }
 }

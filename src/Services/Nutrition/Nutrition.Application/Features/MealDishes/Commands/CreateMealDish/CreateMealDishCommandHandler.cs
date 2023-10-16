@@ -44,27 +44,28 @@ namespace Nutrition.Application.Features.MealDishes.Commands.CreateMealDish
 
         private async Task<MealDetail> GetMealDetail(MealDish mealDish, Guid userId, CancellationToken cancellationToken)
         {
-            var isFoundMealDetail = await _mealDetailRepository.MealDetailExistsAsync(
-                mealDish.MealDetail!.Date,
-                mealDish.MealDetail.MealType,
-                cancellationToken);
+            var foundMealDetail = await _mealDetailRepository.GetOneByAsync(mealDetail =>
+            mealDetail.Date == mealDish.MealDetail!.Date &&
+            mealDetail.MealType == mealDish.MealDetail.MealType,
+            cancellationToken);
 
-            if (!isFoundMealDetail)
+            if (foundMealDetail is null)
             {
                 return await CreateMealDetailAsync(mealDish, userId, cancellationToken);
             }
 
-            return await _mealDetailRepository.GetByDateAndMealTypeAsync(
-                mealDish.MealDetail.Date,
-                mealDish.MealDetail.MealType,
-                cancellationToken);
+            var existingMealDetail = await _mealDetailRepository.GetOneByAsync(mealDetail =>
+            mealDetail.Date == mealDish.MealDetail!.Date &&
+            mealDetail.MealType == mealDish.MealDetail.MealType,
+            cancellationToken);
+
+            return existingMealDetail;
         }
 
         private async Task<MealDetail> CreateMealDetailAsync(MealDish mealDish, Guid userId, CancellationToken cancellationToken)
         {
-            var foodDiary = await _foodDiaryRepository.GetByUserIdAsync(
-                    userId,
-                    cancellationToken);
+            var foodDiary = await _foodDiaryRepository.GetOneByAsync(foodDiary => foodDiary.UserId == userId,
+                cancellationToken);
 
             var mealDetail = new MealDetail()
             {

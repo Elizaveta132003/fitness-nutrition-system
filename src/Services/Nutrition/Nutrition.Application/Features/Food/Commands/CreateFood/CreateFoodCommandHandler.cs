@@ -19,10 +19,10 @@ namespace Nutrition.Application.Features.Food.Commands.CreateFood
         public async Task<FoodResponseDto> Handle(CreateFoodCommand request,
             CancellationToken cancellationToken)
         {
-            var isFoundFood = await _foodRepository.FoodExistsAsync(
-                request.FoodRequestDto.Name, cancellationToken);
+            var foundFood = await _foodRepository.GetOneByAsync(food => food.Name == request.FoodRequestDto.Name,
+                cancellationToken);
 
-            if (isFoundFood)
+            if (foundFood is not null)
             {
                 throw new AlreadyExistsException(FoodErrorMessages.ProductAlreadyExists);
             }

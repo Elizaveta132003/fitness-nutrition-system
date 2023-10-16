@@ -15,6 +15,7 @@ builder.Services.ConfigureMediatR();
 builder.Services.ApplyMigrations(builder.Configuration);
 builder.Services.AddDbContext<NutritionDbContext>();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
@@ -25,9 +26,9 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(s =>
+    app.UseSwaggerUI(swaggerUIOptions =>
     {
-        s.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition API v1");
+        swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition API v1");
     });
 }
 

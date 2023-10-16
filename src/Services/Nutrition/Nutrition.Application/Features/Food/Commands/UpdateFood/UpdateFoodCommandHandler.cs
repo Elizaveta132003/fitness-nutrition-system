@@ -18,10 +18,10 @@ namespace Nutrition.Application.Features.Food.Commands.UpdateFood
         public async Task<FoodResponseDto> Handle(UpdateFoodCommand request,
             CancellationToken cancellationToken)
         {
-            var isFoundFood = await _foodRepository.FoodExistsAsync(
-                request.FoodRequestDto.Name, cancellationToken);
+            var foundFood = await _foodRepository.GetOneByAsync(food => food.Name == request.FoodRequestDto.Name,
+                cancellationToken);
 
-            if (isFoundFood)
+            if (foundFood is null)
             {
                 throw new NotFoundException(FoodErrorMessages.ProductAlreadyExists);
             }

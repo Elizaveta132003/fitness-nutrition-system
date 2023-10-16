@@ -19,7 +19,7 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
         public async Task<FoodResponseDto> Handle(DeleteFoodCommand request,
             CancellationToken cancellationToken)
         {
-            var foundFood = await _foodRepository.GetByIdAsync(request.Id, cancellationToken);
+            var foundFood = await _foodRepository.GetOneByAsync(food => food.Id == request.Id, cancellationToken);
 
             if (foundFood is null)
             {

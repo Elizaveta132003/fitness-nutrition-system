@@ -8,11 +8,11 @@ namespace Nutrition.Application.Validators.RequestValidators
     {
         public MealDetailRequestValidator()
         {
-            RuleFor(x => x.MealType)
+            RuleFor(mealDetial => mealDetial.MealType)
                 .NotNull()
                 .IsInEnum();
 
-            RuleFor(x => x.Date)
+            RuleFor(mealDetial => mealDetial.Date)
                 .NotNull()
                 .NotEmpty()
                 .Must(DateValidator.BeValidDate);

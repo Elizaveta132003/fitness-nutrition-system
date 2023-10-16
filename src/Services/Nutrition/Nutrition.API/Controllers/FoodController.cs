@@ -38,7 +38,7 @@ namespace Nutrition.API.Controllers
         }
 
         [Admin]
-        [HttpDelete("id:guid")]
+        [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

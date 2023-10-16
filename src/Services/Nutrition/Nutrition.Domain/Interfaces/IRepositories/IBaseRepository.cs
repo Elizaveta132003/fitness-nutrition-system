@@ -1,4 +1,5 @@
 ﻿using Nutrition.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Nutrition.Domain.Interfaces.IRepositories
 {
@@ -7,7 +8,8 @@ namespace Nutrition.Domain.Interfaces.IRepositories
         void Create(T entity);
         void Update(T entity);
         void Delete(T entity);
-        Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<T> GetOneByAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
+        Task<IEnumerable<T>> GetAllByAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
         Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -22,10 +22,10 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
         public async Task<UserResponseDto> Handle(CreateUserCommand request,
             CancellationToken cancellationToken)
         {
-            var isFoundUser = await _userRepository.UserExistsAsync(request.UserRequestDto.Username,
+            var foundUser = await _userRepository.GetOneByAsync(user => user.Username == request.UserRequestDto.Username,
                 cancellationToken);
 
-            if (isFoundUser)
+            if (foundUser is not null)
             {
                 throw new AlreadyExistsException(UserErrorMessages.UserAlreadyExists);
             }

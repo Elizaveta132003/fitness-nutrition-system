@@ -19,7 +19,8 @@ namespace Nutrition.Application.Features.MealDishes.Commands.DeleteMealDish
         public async Task<MealDishResponseDto> Handle(DeleteMealDishCommand request,
             CancellationToken cancellationToken)
         {
-            var foundMealDish = await _mealDishRepository.GetByIdAsync(request.Id);
+            var foundMealDish = await _mealDishRepository.GetOneByAsync(mealDish => mealDish.Id == request.Id,
+                cancellationToken);
 
             if (foundMealDish is null)
             {

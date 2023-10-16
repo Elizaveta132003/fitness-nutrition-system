@@ -7,7 +7,7 @@ namespace Nutrition.Application.Validators.RequestValidators
     {
         public MealDishRequestValidator()
         {
-            RuleFor(x => x.ServingSize)
+            RuleFor(mealDish => mealDish.ServingSize)
                 .NotEmpty()
                 .NotNull()
                 .GreaterThanOrEqualTo(0)

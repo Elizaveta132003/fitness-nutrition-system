@@ -7,7 +7,7 @@ namespace Nutrition.Application.Validators.RequestValidators
     {
         public UserRequestValidator()
         {
-            RuleFor(x => x.Username)
+            RuleFor(user => user.Username)
                 .NotEmpty()
                 .NotNull()
                 .WithMessage("Username is required.")

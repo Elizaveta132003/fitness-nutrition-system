@@ -20,8 +20,10 @@ namespace Nutrition.Application.Features.MealDishes.Queries.GetAllMealDishesByUs
         public async Task<IEnumerable<MealDishResponseDto>> Handle
             (GetAllMealDishesByUserIdAndDateQuery request, CancellationToken cancellationToken)
         {
-            var foundMealDishes = await _mealDishRepository.GetAllMealDishesByUserIdAndDateAsync(
-                request.UserId, request.Date, cancellationToken);
+            var foundMealDishes = await _mealDishRepository.GetAllByAsync(mealDish =>
+            mealDish.MealDetail.FoodDiary.UserId == request.UserId &&
+            mealDish.MealDetail.Date == request.Date,
+            cancellationToken);
 
             if (!foundMealDishes.Any())
             {

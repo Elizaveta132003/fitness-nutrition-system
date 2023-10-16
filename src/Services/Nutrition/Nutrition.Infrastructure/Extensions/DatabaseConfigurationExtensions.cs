@@ -15,7 +15,6 @@ namespace Nutrition.Infrastructure.Extensions
             services.AddDbContext<NutritionDbContext>(options =>
             options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
 
-            //services.AddScoped(IBaseRepository, BaseRepository);
             services.AddScoped<IFoodDiaryRepository, FoodDiaryRepository>();
             services.AddScoped<IFoodRepository, FoodRepository>();
             services.AddScoped<IMealDetailRepository, MealDetailRepository>();

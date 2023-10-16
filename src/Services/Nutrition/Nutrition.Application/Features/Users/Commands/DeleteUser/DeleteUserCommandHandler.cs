@@ -19,7 +19,8 @@ namespace Nutrition.Application.Features.Users.Commands.DeleteUser
         public async Task<UserResponseDto> Handle(DeleteUserCommand request,
             CancellationToken cancellationToken)
         {
-            var foundUser = await _userRepository.GetByIdAsync(request.id, cancellationToken);
+            var foundUser = await _userRepository.GetOneByAsync(user => user.Id == request.Id,
+                cancellationToken);
 
             if (foundUser is null)
             {
