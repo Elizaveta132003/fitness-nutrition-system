@@ -1,4 +1,5 @@
 using Calories.API.Configurations;
+using Calories.API.Middleware;
 using Calories.BusinessLogic.Extensions;
 using Calories.DataAccess.Extensions;
 using FluentValidation.AspNetCore;
@@ -18,6 +19,7 @@ builder.Services.AddConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
