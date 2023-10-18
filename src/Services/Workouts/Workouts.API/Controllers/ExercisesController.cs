@@ -25,9 +25,9 @@ namespace Workouts.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ExerciseResponseDto>> CreateExerciseAsync([FromBody] ExerciseRequestDto exerciseRequestDto,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
-            var result = await _exerciseService.CreateAsync(exerciseRequestDto);
+            var result = await _exerciseService.CreateAsync(exerciseRequestDto, cancellationToken);
 
             return Ok(result);
         }
@@ -39,9 +39,9 @@ namespace Workouts.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ExerciseResponseDto>> DeleteExerciseAsync(Guid id,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
-            var result = await _exerciseService.DeleteAsync(id);
+            var result = await _exerciseService.DeleteAsync(id, cancellationToken);
 
             return Ok(result);
         }
@@ -54,9 +54,9 @@ namespace Workouts.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ExerciseResponseDto>> UpdateExerciseAsync(Guid id,
             ExerciseRequestDto exerciseRequestDto,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
-            var result = await _exerciseService.UpdateAsync(id, exerciseRequestDto);
+            var result = await _exerciseService.UpdateAsync(id, exerciseRequestDto, cancellationToken);
 
             return Ok(result);
         }
@@ -66,9 +66,10 @@ namespace Workouts.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<ExerciseResponseDto>>> GetAllExercisesAsync(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<IEnumerable<ExerciseResponseDto>>> GetAllExercisesAsync(
+            CancellationToken cancellationToken)
         {
-            var result = await _exerciseService.GetAllAsync();
+            var result = await _exerciseService.GetAllAsync(cancellationToken);
 
             return Ok(result);
         }
@@ -78,9 +79,10 @@ namespace Workouts.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ExerciseResponseDto>> GetExerciseByName(string name, CancellationToken cancellationToken = default)
+        public async Task<ActionResult<ExerciseResponseDto>> GetExerciseByName(string name,
+            CancellationToken cancellationToken)
         {
-            var result = await _exerciseService.GetByNameAsync(name);
+            var result = await _exerciseService.GetByNameAsync(name, cancellationToken);
 
             return Ok(result);
         }

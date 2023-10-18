@@ -45,37 +45,6 @@ namespace Workouts.BusinessLogic.Services.Implementations
             return workoutExerciseResponseDto;
         }
 
-        private async Task<Workout> GetWorkoutAsync(WorkoutExercise workoutExercise, Guid userId, CancellationToken cancellationToken)
-        {
-            var foundWorkout = await _workoutRepository.GetOneByAsync(workout => workout.Date == workoutExercise.Workout.Date,
-                cancellationToken);
-
-            if (foundWorkout is null)
-            {
-                return await CreateWorkoutAsync(workoutExercise, userId, cancellationToken);
-            }
-
-            return foundWorkout;
-        }
-
-        private async Task<Workout> CreateWorkoutAsync(WorkoutExercise workoutExercise, Guid userId,
-            CancellationToken cancellationToken)
-        {
-            var exerciseDiary = await _exercisesDiaryRepository.GetOneByAsync(exerciseDiary => exerciseDiary.UserId == userId,
-                cancellationToken);
-
-            var workout = new Workout()
-            {
-                Id = Guid.NewGuid(),
-                ExercisesDiaryId = exerciseDiary.Id,
-                Date = workoutExercise.Workout.Date
-            };
-
-            _workoutRepository.Create(workout);
-
-            return workout;
-        }
-
         public async Task<WorkoutExerciseResponseDto> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var foundWorkoutExercise = await _workoutExerciseRepository.GetOneByAsync(
@@ -149,6 +118,36 @@ namespace Workouts.BusinessLogic.Services.Implementations
             var workoutExerciseResponseDto = foundWorkoutExercise.Adapt<WorkoutExerciseResponseDto>();
 
             return workoutExerciseResponseDto;
+        }
+        private async Task<Workout> GetWorkoutAsync(WorkoutExercise workoutExercise, Guid userId, CancellationToken cancellationToken)
+        {
+            var foundWorkout = await _workoutRepository.GetOneByAsync(workout => workout.Date == workoutExercise.Workout.Date,
+                cancellationToken);
+
+            if (foundWorkout is null)
+            {
+                return await CreateWorkoutAsync(workoutExercise, userId, cancellationToken);
+            }
+
+            return foundWorkout;
+        }
+
+        private async Task<Workout> CreateWorkoutAsync(WorkoutExercise workoutExercise, Guid userId,
+            CancellationToken cancellationToken)
+        {
+            var exerciseDiary = await _exercisesDiaryRepository.GetOneByAsync(exerciseDiary => exerciseDiary.UserId == userId,
+                cancellationToken);
+
+            var workout = new Workout()
+            {
+                Id = Guid.NewGuid(),
+                ExercisesDiaryId = exerciseDiary.Id,
+                Date = workoutExercise.Workout.Date
+            };
+
+            _workoutRepository.Create(workout);
+
+            return workout;
         }
     }
 }

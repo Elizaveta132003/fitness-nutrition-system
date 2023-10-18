@@ -9,7 +9,7 @@ namespace Workouts.DataAccess.Extensions
 {
     public static class DatabaseConfigurationExtensions
     {
-        public static void ApplyMigrations(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureDatabaseServices(this IServiceCollection services, IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<WorkoutDbContext>(options =>

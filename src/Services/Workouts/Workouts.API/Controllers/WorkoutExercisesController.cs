@@ -26,9 +26,9 @@ namespace Workouts.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<WorkoutExerciseResponseDto>> CreateWorkoutExerciseAsync(
             [FromBody] WorkoutExerciseRequestDto workoutExerciseRequestDto,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
-            var result = await _workoutExerciseService.CreateAsync(workoutExerciseRequestDto);
+            var result = await _workoutExerciseService.CreateAsync(workoutExerciseRequestDto, cancellationToken);
 
             return Ok(result);
         }
@@ -40,9 +40,9 @@ namespace Workouts.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<WorkoutExerciseResponseDto>> DeleteWorkoutExerciseAsync(
-            Guid id, CancellationToken cancellationToken = default)
+            Guid id, CancellationToken cancellationToken)
         {
-            var result = await _workoutExerciseService.DeleteAsync(id);
+            var result = await _workoutExerciseService.DeleteAsync(id, cancellationToken);
 
             return Ok(result);
         }
@@ -55,10 +55,10 @@ namespace Workouts.API.Controllers
         public async Task<ActionResult<IEnumerable<WorkoutExerciseResponseDto>>> GetAllWorkoutExercisesByUserIdAndDateAsync(
             Guid userId,
             DateTime date,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var result = await _workoutExerciseService.GetAllWorkoutExercisesByUserIdAndDateAsync(
-                userId, date);
+                userId, date, cancellationToken);
 
             return Ok(result);
         }
@@ -72,10 +72,10 @@ namespace Workouts.API.Controllers
             Guid userId,
             DateTime date,
             ExerciseType type,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var result = await _workoutExerciseService.GetAllWorkoutExercisesByUserIdAndDateAndTypeAsync(
-                userId, date, type);
+                userId, date, type, cancellationToken);
 
             return Ok(result);
         }

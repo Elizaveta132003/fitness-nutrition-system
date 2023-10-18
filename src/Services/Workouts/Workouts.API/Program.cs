@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddBusinessLogicService();
-builder.Services.ApplyMigrations(builder.Configuration);
+builder.Services.ConfigureDatabaseServices(builder.Configuration);
 builder.Services.AddDbContext<WorkoutDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
