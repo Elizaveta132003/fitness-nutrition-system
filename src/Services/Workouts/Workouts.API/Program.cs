@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
-
+app.ApplyMigration();
 app.UseMiddleware<ExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
