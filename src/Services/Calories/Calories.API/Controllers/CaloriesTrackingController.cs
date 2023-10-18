@@ -25,7 +25,7 @@ namespace Calories.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<CaloriesTrackingResponseDto>> CreateCaloriesTrackingAsync(
             [FromBody] CaloriesTrackingRequestDto caloriesTrackingRequestDto,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var result = await _caloriesTrackingService.CreateAsync(caloriesTrackingRequestDto, cancellationToken);
 
@@ -39,7 +39,7 @@ namespace Calories.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<CaloriesTrackingResponseDto>> DeleteCaloriesTrackingAsync(
-            string id, CancellationToken cancellationToken = default)
+            string id, CancellationToken cancellationToken)
         {
             var result = await _caloriesTrackingService.DeleteAsync(id, cancellationToken);
 
@@ -55,7 +55,7 @@ namespace Calories.API.Controllers
         public async Task<ActionResult<CaloriesTrackingResponseDto>> UpdateCaloriesTrackingAsync(
             string id,
             [FromBody] CaloriesTrackingRequestDto caloriesTrackingRequestDto,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var result = await _caloriesTrackingService.UpdateAsync(id, caloriesTrackingRequestDto, cancellationToken);
 
@@ -68,7 +68,7 @@ namespace Calories.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<CaloriesTrackingResponseDto>>> GetAllCaloriesTrackingAsync(
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken)
         {
             var result = await _caloriesTrackingService.GetAllAsync(cancellationToken);
 

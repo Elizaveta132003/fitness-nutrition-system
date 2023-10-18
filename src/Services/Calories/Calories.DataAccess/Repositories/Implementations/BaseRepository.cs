@@ -6,7 +6,7 @@ namespace Calories.DataAccess.Repositories.Implementations
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        private readonly IMongoCollection<T> _mongoCollection;
+        protected readonly IMongoCollection<T> _mongoCollection;
 
         public BaseRepository(IMongoDatabase database)
         {
@@ -32,7 +32,8 @@ namespace Calories.DataAccess.Repositories.Implementations
 
         public async Task<T> GetByIdAsync(string id, CancellationToken cancellationToken = default)
         {
-            var entity = await _mongoCollection.FindAsync(Builders<T>.Filter.Eq(entity => entity.Id, id));
+            var entity = await _mongoCollection.FindAsync(Builders<T>.Filter.Eq(entity => entity.Id, id),
+                cancellationToken: cancellationToken);
 
             return await entity.FirstOrDefaultAsync(cancellationToken);
         }
