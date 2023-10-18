@@ -1,23 +1,38 @@
+using Calories.API.Configurations;
+using Calories.API.Middleware;
+using Calories.BusinessLogic.Extensions;
+using Calories.DataAccess.Extensions;
+using FluentValidation.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddBusinessLogicService();
+builder.Services.ConfigureMongo(builder.Configuration);
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+builder.Services.AddSwaggerGenConfiguration();
+builder.Services.AddConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(swaggerUiOptions =>
+    {
+        swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Calories API v1");
+    });
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
