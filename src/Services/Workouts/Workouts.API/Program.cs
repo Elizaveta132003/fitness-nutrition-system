@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.ConfigureCors();
+builder.Services.ConfigureKafka(builder.Configuration);
 builder.Services.AddBusinessLogicService();
 builder.Services.ConfigureDatabaseServices(builder.Configuration);
 builder.Services.AddDbContext<WorkoutDbContext>();
@@ -20,10 +22,10 @@ builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
-app.ApplyMigration();
+
 app.UseMiddleware<ExceptionMiddleware>();
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUiOptions =>
@@ -33,10 +35,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseCors("CorsPolicy");
+
 app.MapControllers();
+
+app.ApplyMigration();
 
 app.Run();
