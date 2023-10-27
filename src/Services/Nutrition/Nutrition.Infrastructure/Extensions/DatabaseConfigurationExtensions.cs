@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nutrition.Domain.Interfaces.IRepositories;
@@ -9,7 +10,7 @@ namespace Nutrition.Infrastructure.Extensions
 {
     public static class DatabaseConfigurationExtensions
     {
-        public static void ApplyMigrations(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureDatabaseServices(this IServiceCollection services, IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<NutritionDbContext>(options =>
@@ -20,6 +21,15 @@ namespace Nutrition.Infrastructure.Extensions
             services.AddScoped<IMealDetailRepository, MealDetailRepository>();
             services.AddScoped<IMealDishRepository, MealDishRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+        }
+
+        public static void ApplyMigration(this IApplicationBuilder applicationBuilder)
+        {
+            using var services = applicationBuilder.ApplicationServices.CreateScope();
+
+            var dbContext = services.ServiceProvider.GetService<NutritionDbContext>();
+
+            dbContext?.Database.Migrate();
         }
     }
 }

@@ -10,9 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
+builder.Services.ConfigureCors();
 builder.Services.AddValidatorsFromAssemblyContaining<FoodRequestValidator>();
+builder.Services.ConfigureKafka(builder.Configuration);
 builder.Services.ConfigureMediatR();
-builder.Services.ApplyMigrations(builder.Configuration);
+builder.Services.ConfigureDatabaseServices(builder.Configuration);
 builder.Services.AddDbContext<NutritionDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -38,5 +40,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors("CorsPolicy");
+
+app.ApplyMigration();
 
 app.Run();
