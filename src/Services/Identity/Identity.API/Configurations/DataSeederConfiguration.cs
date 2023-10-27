@@ -14,13 +14,13 @@ namespace Identity.API.Configurations
         /// Applies database migrations and seeds data for the specified context.
         /// </summary>
         /// <param name="app">The application host.</param>
-        public static void ApplyMigrations(this IHost app)
+        public static void ApplyMigrations(this IApplicationBuilder app)
         {
-            app.MigrateDatabase<ApplicationDbContext>( (context, serviceProvider) =>
+            app.MigrateDatabase<ApplicationDbContext>((context, serviceProvider) =>
              {
                  var dataSeeder = new ApplicationContextSeed(serviceProvider.GetRequiredService<UserManager<AppUser>>(),
                      serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>());
-                  dataSeeder.SeedAsync().Wait();
+                 dataSeeder.SeedAsync().Wait();
              });
         }
 
@@ -31,10 +31,10 @@ namespace Identity.API.Configurations
         /// <param name="host">The application host.</param>
         /// <param name="seeder">An action to perform migration and seeding tasks on the DbContext.</param>
         /// <returns></returns>
-        private static IHost MigrateDatabase<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder)
+        private static IApplicationBuilder MigrateDatabase<TContext>(this IApplicationBuilder host, Action<TContext, IServiceProvider> seeder)
             where TContext : DbContext
         {
-            using (var scope = host.Services.CreateScope())
+            using (var scope = host.ApplicationServices.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetService<TContext>();
