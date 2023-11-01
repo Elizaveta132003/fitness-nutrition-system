@@ -8,7 +8,6 @@ using Nutrition.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<FoodRequestValidator>();
 builder.Services.ConfigureMediatR();
