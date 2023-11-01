@@ -24,4 +24,7 @@ services:
         build:
             context: "."
             dockerfile: /Services/Identity/Identity.API/Dockerfile
+    mongodb:
+        container_name: Mongodb
+        image: mongo:latest
         
