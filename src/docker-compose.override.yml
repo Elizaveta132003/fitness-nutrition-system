@@ -25,3 +25,10 @@ services:
         restart: unless-stopped
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+    mongodb:
+        ports:
+            - 27017:27017
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=root
+            - MONGO_INITDB_ROOT_PASSWORD=mongo123
+        restart: unless-stopped
