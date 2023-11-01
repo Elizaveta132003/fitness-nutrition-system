@@ -7,7 +7,7 @@ using Workouts.DataAccess.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.ConfigureGrpc(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddBusinessLogicService();
 builder.Services.ConfigureDatabaseServices(builder.Configuration);
