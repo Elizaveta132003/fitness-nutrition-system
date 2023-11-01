@@ -22,6 +22,7 @@ namespace Calories.BusinessLogic.Services.Implementations
             CancellationToken cancellationToken = default)
         {
             var createCaloriesTracking = caloriesTracking.Adapt<CaloriesTracking>();
+            createCaloriesTracking.Date = createCaloriesTracking.Date.Date;
 
             await _caloriesTrackingRepository.CreateAsync(createCaloriesTracking, cancellationToken);
 
