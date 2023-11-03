@@ -6,6 +6,7 @@ using Identity.Infrastructure.Configurations;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.ConfigureCors();
 builder.Services.ConfigureIdentity(builder.Configuration);
 builder.Services.ConfigureServices();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddAuthenticationConfiguration(builder.Configuration);
 
 var app = builder.Build();
+app.UseCors("CorsPolicy");
 app.UseMiddleware<ExceptionMiddleware>();
 
 if (!app.Environment.IsProduction())
