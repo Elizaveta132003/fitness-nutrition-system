@@ -9,6 +9,9 @@ using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Shared.Kafka;
+using Shared.Kafka.Enums;
+using Shared.Kafka.Messages;
 
 namespace Identity.Application.Services.Implementations
 {
@@ -20,6 +23,7 @@ namespace Identity.Application.Services.Implementations
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<IUserService> _logger;
         private readonly ITokenService _tokenService;
+        private readonly IKafkaMessageBus<string, UserMessage> _bus;
 
         /// <summary>
         /// Initializes a new instance of the UserService class.
@@ -28,11 +32,12 @@ namespace Identity.Application.Services.Implementations
         /// <param name="logger">The logger for logging service events.</param>
         /// <param name="tokenService">The token service for creating authentication tokens.</param>
         public UserService(UserManager<AppUser> userManager, ILogger<IUserService> logger,
-            ITokenService tokenService)
+            ITokenService tokenService, IKafkaMessageBus<string, UserMessage> bus)
         {
             _userManager = userManager;
             _logger = logger;
             _tokenService = tokenService;
+            _bus = bus;
         }
 
         /// <summary>
@@ -54,6 +59,16 @@ namespace Identity.Application.Services.Implementations
             }
 
             await _userManager.AddToRoleAsync(user, Role.user.ToString());
+
+            var createUserMessage = new UserMessage()
+            {
+                Id = user.Id,
+                Username = user.UserName!,
+                MessageType = MessageType.Create
+            };
+
+            await _bus.PublishAsync(user.UserName!, createUserMessage);
+
             var result = user.Adapt<ResponseAppUserRegisterDto>();
 
             return result;
@@ -78,6 +93,14 @@ namespace Identity.Application.Services.Implementations
 
             var responseModel = existingUser.Adapt<ResponseAppUserDto>();
             await _userManager.DeleteAsync(existingUser);
+
+            var deleteUserMessage = new UserMessage()
+            {
+                Id = existingUser.Id,
+                MessageType = MessageType.Delete
+            };
+
+            await _bus.PublishAsync(existingUser.UserName, deleteUserMessage);
 
             return responseModel;
         }

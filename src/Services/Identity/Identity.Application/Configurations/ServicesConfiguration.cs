@@ -1,6 +1,9 @@
 ﻿using Identity.Application.Services.Implementations;
 using Identity.Application.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Kafka;
+using Shared.Kafka.Messages;
 
 namespace Identity.Application.Configurations
 {
