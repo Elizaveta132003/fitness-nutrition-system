@@ -15,13 +15,17 @@ namespace Workouts.BusinessLogic.Services.Implementations
         private readonly IWorkoutExerciseRepository _workoutExerciseRepository;
         private readonly IWorkoutRepository _workoutRepository;
         private readonly IExercisesDiaryRepository _exercisesDiaryRepository;
+        private readonly IUpdateCaloriesClient _updateCaloriesClient;
 
         public WorkoutExerciseService(IWorkoutExerciseRepository workoutExerciseRepository,
-            IWorkoutRepository workoutRepository, IExercisesDiaryRepository exercisesDiaryRepository)
+            IWorkoutRepository workoutRepository,
+            IExercisesDiaryRepository exercisesDiaryRepository,
+            IUpdateCaloriesClient updateCaloriesClient)
         {
             _workoutExerciseRepository = workoutExerciseRepository;
             _workoutRepository = workoutRepository;
             _exercisesDiaryRepository = exercisesDiaryRepository;
+            _updateCaloriesClient = updateCaloriesClient;
         }
 
         public async Task<WorkoutExerciseResponseDto> CreateAsync(WorkoutExerciseRequestDto workoutExercise,
@@ -39,6 +43,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
             _workoutExerciseRepository.Create(createWorkoutExercise);
 
             await _workoutExerciseRepository.SaveChangesAsync(cancellationToken);
+
+            await _updateCaloriesClient.UpdateCaloriesAsync(workoutExercise, cancellationToken);
 
             var workoutExerciseResponseDto = createWorkoutExercise.Adapt<WorkoutExerciseResponseDto>();
 

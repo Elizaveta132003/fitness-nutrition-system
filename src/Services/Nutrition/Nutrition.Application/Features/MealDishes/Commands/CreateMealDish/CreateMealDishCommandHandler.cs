@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MediatR;
 using Nutrition.Application.Dtos.ResponseDtos;
+using Nutrition.Application.Interfaces.IGrpcService;
 using Nutrition.Domain.Entities;
 using Nutrition.Domain.Interfaces.IRepositories;
 
@@ -11,14 +12,17 @@ namespace Nutrition.Application.Features.MealDishes.Commands.CreateMealDish
         private readonly IMealDishRepository _mealDishRepository;
         private readonly IMealDetailRepository _mealDetailRepository;
         private readonly IFoodDiaryRepository _foodDiaryRepository;
+        private readonly IUpdateCaloriesClient _updateCaloriesClient;
 
         public CreateMealDishCommandHandler(IMealDishRepository mealDishRepository,
             IMealDetailRepository mealDetailRepository,
-            IFoodDiaryRepository foodDiaryRepository)
+            IFoodDiaryRepository foodDiaryRepository,
+            IUpdateCaloriesClient updateCaloriesClient)
         {
             _mealDishRepository = mealDishRepository;
             _mealDetailRepository = mealDetailRepository;
             _foodDiaryRepository = foodDiaryRepository;
+            _updateCaloriesClient = updateCaloriesClient;
         }
 
         public async Task<MealDishResponseDto> Handle(CreateMealDishCommand request,
@@ -36,6 +40,8 @@ namespace Nutrition.Application.Features.MealDishes.Commands.CreateMealDish
             _mealDishRepository.Create(mealDish);
 
             await _mealDetailRepository.SaveChangesAsync(cancellationToken);
+
+            await _updateCaloriesClient.UpdateCaloriesAsync(request.MealDishRequestDto, cancellationToken);
 
             var mealDishResponseDto = mealDish.Adapt<MealDishResponseDto>();
 
