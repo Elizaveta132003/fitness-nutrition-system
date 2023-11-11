@@ -29,7 +29,7 @@ if (!app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUIOptions =>
     {
-        swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition API v1");
+        swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition API");
     });
 }
 
