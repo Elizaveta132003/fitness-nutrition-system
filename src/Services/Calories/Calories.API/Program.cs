@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUiOptions =>
     {
-        swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Calories API v1");
+        swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Calories API");
     });
 }
 
