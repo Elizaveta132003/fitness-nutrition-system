@@ -16,10 +16,10 @@ namespace Nutrition.API.SignalR
             _backgroundJobsService = backgroundJobsService;
         }
 
-        public async Task SendData(string userName, CancellationToken cancellationToken = default)
+        public async Task SendData(string userName)
         {
             var currentDate = DateTime.Now;
-            var result = await _backgroundJobsService.CalculateCaloriesForUserAndDayAsync(userName, currentDate, cancellationToken);
+            var result = await _backgroundJobsService.CalculateCaloriesForUserAndDayAsync(userName, currentDate);
 
             await _hubContext.Clients.All.SendAsync("ReceiveCalories", result);
         }
