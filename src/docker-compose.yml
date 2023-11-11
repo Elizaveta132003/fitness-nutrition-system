@@ -24,4 +24,6 @@ services:
         build:
             context: "."
             dockerfile: /Services/Identity/Identity.API/Dockerfile
+    reactclient:
+        container_name: reactclient
         

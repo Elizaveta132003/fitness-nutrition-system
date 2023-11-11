@@ -25,3 +25,9 @@ services:
         restart: unless-stopped
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+    reactclient:
+        ports:
+            - 3000:3000
+        restart: unless-stopped
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
