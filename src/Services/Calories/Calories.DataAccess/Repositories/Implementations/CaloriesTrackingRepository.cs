@@ -6,11 +6,8 @@ namespace Calories.DataAccess.Repositories.Implementations
 {
     public class CaloriesTrackingRepository : BaseRepository<CaloriesTracking>, ICaloriesTrackingRepository
     {
-        private readonly IMongoCollection<CaloriesTracking> _mongoCollection;
-
         public CaloriesTrackingRepository(IMongoDatabase database) : base(database)
         {
-            _mongoCollection = database.GetCollection<CaloriesTracking>(typeof(CaloriesTracking).Name);
         }
 
         public async Task<CaloriesTracking> GetByDateAndUserIdAsync(DateTime date, string userId,
