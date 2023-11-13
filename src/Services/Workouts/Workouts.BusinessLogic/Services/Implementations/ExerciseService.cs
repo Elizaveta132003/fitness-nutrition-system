@@ -1,8 +1,12 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Workouts.BusinessLogic.Dtos.RequestDtos;
 using Workouts.BusinessLogic.Dtos.ResponseDtos;
 using Workouts.BusinessLogic.Exceptions;
+using Workouts.BusinessLogic.Extensions;
 using Workouts.BusinessLogic.Helpers;
+using Workouts.BusinessLogic.Options;
 using Workouts.BusinessLogic.Services.Interfaces;
 using Workouts.DataAccess.Entities;
 using Workouts.DataAccess.Enums;
@@ -13,10 +17,15 @@ namespace Workouts.BusinessLogic.Services.Implementations
     public class ExerciseService : IExerciseService
     {
         private readonly IExerciseRepository _exerciseRepository;
+        private readonly IDistributedCache _cache;
+        private readonly IOptions<RedisCacheOptions> _cacheOptions;
 
-        public ExerciseService(IExerciseRepository exerciseRepository)
+        public ExerciseService(IExerciseRepository exerciseRepository, IDistributedCache cache,
+            IOptions<RedisCacheOptions> options)
         {
             _exerciseRepository = exerciseRepository;
+            _cache = cache;
+            _cacheOptions = options;
         }
 
         public async Task<ExerciseResponseDto> CreateAsync(ExerciseRequestDto exercise,
@@ -44,7 +53,14 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
         public async Task<ExerciseResponseDto> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var foundExercise = await _exerciseRepository.GetOneByAsync(exercise => exercise.Id == id, cancellationToken);
+            Exercise foundExercise;
+            var cacheKey = CacheHelper.GetCacheKeyForExercise(id);
+            var isExerciseInCache = _cache.TryGetValue(cacheKey, out foundExercise);
+
+            if (!isExerciseInCache)
+            {
+                foundExercise = await _exerciseRepository.GetOneByAsync(exercise => exercise.Id == id, cancellationToken);
+            }
 
             if (foundExercise is null)
             {
@@ -56,6 +72,13 @@ namespace Workouts.BusinessLogic.Services.Implementations
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
 
             var exerciseResponseDto = foundExercise.Adapt<ExerciseResponseDto>();
+
+            if (!isExerciseInCache)
+            {
+                return exerciseResponseDto;
+            }
+
+            await _cache.RemoveAsync(cacheKey, cancellationToken);
 
             return exerciseResponseDto;
         }
@@ -100,7 +123,14 @@ namespace Workouts.BusinessLogic.Services.Implementations
         public async Task<ExerciseResponseDto> UpdateAsync(Guid id, ExerciseRequestDto exercise,
             CancellationToken cancellationToken = default)
         {
-            var foundExercise = await _exerciseRepository.GetOneByAsync(exercise => exercise.Id == id, cancellationToken);
+            Exercise foundExercise;
+            var cacheKey = CacheHelper.GetCacheKeyForExercise(id);
+            var isExerciseInCache = _cache.TryGetValue(cacheKey, out foundExercise);
+
+            if (!isExerciseInCache)
+            {
+                foundExercise = await _exerciseRepository.GetOneByAsync(exercise => exercise.Id == id, cancellationToken);
+            }
 
             if (foundExercise is null)
             {
@@ -112,9 +142,16 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             _exerciseRepository.Update(updateExercise);
 
+            var exerciseResponseDto = updateExercise.Adapt<ExerciseResponseDto>();
+
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
 
-            var exerciseResponseDto = updateExercise.Adapt<ExerciseResponseDto>();
+            if (isExerciseInCache)
+            {
+                return exerciseResponseDto;
+            }
+
+            await updateExercise.AddToCacheAsync(_cache, _cacheOptions);
 
             return exerciseResponseDto;
         }
