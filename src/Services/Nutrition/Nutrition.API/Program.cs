@@ -17,6 +17,7 @@ builder.Services.ConfigureDatabaseServices(builder.Configuration);
 builder.Services.AddDbContext<NutritionDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.ConfigureLogger(builder);
 
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
