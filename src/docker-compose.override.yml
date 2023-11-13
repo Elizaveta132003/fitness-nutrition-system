@@ -32,3 +32,19 @@ services:
             - MONGO_INITDB_ROOT_USERNAME=root
             - MONGO_INITDB_ROOT_PASSWORD=mongo123
         restart: unless-stopped
+    kibana:
+        ports:
+            - 5601:5601
+        environment:
+            - ELASTICSEARCH_URL:http://localhost:9200
+    elasticsearch:
+        ports:
+            - 9200:9200
+        environment: 
+            - xpack.security.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            - discovery.type=single-node
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+volumes:   
+  elasticsearch-data:

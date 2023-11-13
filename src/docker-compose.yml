@@ -52,6 +52,7 @@ services:
             dockerfile: /Services/Calories/Calories.API/Dockerfile
         depends_on:
           - sqlserver
+          - elasticsearch
 
     nutrition:
         container_name: Nutrition
@@ -70,6 +71,7 @@ services:
           - sqlserver
           - zookeeper
           - kafka 
+          - elasticsearch
 
     identity:
         container_name: Identity
@@ -84,3 +86,12 @@ services:
           - sqlserver
           - kafka
           - zookeeper
+          - elasticsearch
+    kibana:
+        container_name: kibana
+        image: kibana:8.8.1
+        depends_on:
+        - elasticsearch
+    elasticsearch:
+        container_name: elasticsearch
+        image: elasticsearch:8.8.1
