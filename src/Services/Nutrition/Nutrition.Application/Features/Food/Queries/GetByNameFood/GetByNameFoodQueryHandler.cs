@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Nutrition.Application.Dtos.ResponseDtos;
 using Nutrition.Application.Exceptions;
 using Nutrition.Application.Helpers;
@@ -10,10 +11,12 @@ namespace Nutrition.Application.Features.Food.Queries.GetByNameFood
     public class GetByNameFoodQueryHandler : IRequestHandler<GetByNameFoodQuery, FoodResponseDto>
     {
         private readonly IFoodRepository _foodRepository;
+        private readonly ILogger<GetByNameFoodQueryHandler> _logger;
 
-        public GetByNameFoodQueryHandler(IFoodRepository foodRepository)
+        public GetByNameFoodQueryHandler(IFoodRepository foodRepository, ILogger<GetByNameFoodQueryHandler> logger)
         {
             _foodRepository = foodRepository;
+            _logger = logger;
         }
 
         public async Task<FoodResponseDto> Handle(GetByNameFoodQuery request,
@@ -26,6 +29,8 @@ namespace Nutrition.Application.Features.Food.Queries.GetByNameFood
             {
                 throw new NotFoundException(FoodErrorMessages.ProductNotFound);
             }
+
+            _logger.LogInformation($"Product by name {existingFood.Name} received");
 
             var responseModel = existingFood.Adapt<FoodResponseDto>();
 

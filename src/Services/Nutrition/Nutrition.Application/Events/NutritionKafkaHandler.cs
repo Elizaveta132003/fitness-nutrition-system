@@ -1,4 +1,5 @@
-﻿using Nutrition.Domain.Entities;
+﻿using Microsoft.Extensions.Logging;
+using Nutrition.Domain.Entities;
 using Nutrition.Domain.Interfaces.IRepositories;
 using Shared.Kafka.Consumer;
 using Shared.Kafka.Enums;
@@ -9,10 +10,12 @@ namespace Nutrition.Application.Events
     public class NutritionKafkaHandler : IKafkaHandler<string, UserMessage>
     {
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<NutritionKafkaHandler> _logger;
 
-        public NutritionKafkaHandler(IUserRepository userRepository)
+        public NutritionKafkaHandler(IUserRepository userRepository, ILogger<NutritionKafkaHandler> logger)
         {
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task HandleAsync(string key, UserMessage value)
@@ -31,12 +34,16 @@ namespace Nutrition.Application.Events
 
                     await _userRepository.SaveChangesAsync();
 
+                    _logger.LogInformation("User is created");
+
                     break;
                 case MessageType.Delete:
 
                     _userRepository.Delete(user);
 
                     await _userRepository.SaveChangesAsync();
+
+                    _logger.LogInformation("User is removed");
 
                     break;
                 default:
