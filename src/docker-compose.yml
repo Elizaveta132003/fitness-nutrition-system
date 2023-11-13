@@ -84,3 +84,6 @@ services:
           - sqlserver
           - kafka
           - zookeeper
+    redis:
+        container_name: Redis
+        image: redis:latest

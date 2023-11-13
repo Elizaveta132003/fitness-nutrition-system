@@ -32,3 +32,9 @@ services:
             - MONGO_INITDB_ROOT_USERNAME=root
             - MONGO_INITDB_ROOT_PASSWORD=mongo123
         restart: unless-stopped
+    redis:
+        ports: 
+            - 6379:6379
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        restart: unless-stopped
