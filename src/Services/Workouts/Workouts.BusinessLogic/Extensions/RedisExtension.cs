@@ -10,6 +10,7 @@ namespace Workouts.BusinessLogic.Extensions
         public static Task SetAsync<T>(this IDistributedCache cache, string key, T value, DistributedCacheEntryOptions options)
         {
             var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(value, GetJsonSerializerOptions()));
+
             return cache.SetAsync(key, bytes, options);
         }
 
@@ -18,7 +19,7 @@ namespace Workouts.BusinessLogic.Extensions
             var result = cache.Get(key);
             value = default;
 
-            if (result is null)
+            if(result is null)
             {
                 return false;
             }

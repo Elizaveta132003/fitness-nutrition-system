@@ -12,13 +12,25 @@ namespace Workouts.BusinessLogic.Extensions
             IOptions<RedisCacheOptions> options)
         {
             var cacheKey = CacheHelper.GetCacheKeyForExercise(exercise.Id);
+            await AddToCacheAsync(cache, cacheKey, exercise, options);
+        }
 
+        public static async Task AddListToCacheAsync(this IEnumerable<Exercise> exercises, IDistributedCache cache,
+            IOptions<RedisCacheOptions> options)
+        {
+            var cacheKey = CacheHelper.GetCacheKeyForAllExercises();
+            await AddToCacheAsync(cache, cacheKey, exercises, options);
+        }
+
+        private static async Task AddToCacheAsync<T>(IDistributedCache cache, string cacheKey, T value,
+        IOptions<RedisCacheOptions> options)
+        {
             var cacheOptions = new DistributedCacheEntryOptions()
             {
                 SlidingExpiration = TimeSpan.FromMinutes(options.Value.SlidingExpirationTimeInMinutes)
             };
 
-            await cache.SetAsync(cacheKey, exercise, cacheOptions);
+            await cache.SetAsync(cacheKey, value, cacheOptions);
         }
     }
 }

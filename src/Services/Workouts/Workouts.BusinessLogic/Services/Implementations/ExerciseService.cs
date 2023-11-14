@@ -34,7 +34,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
             var foundExercise = await _exerciseRepository.GetOneByAsync(ex =>
             ex.Name == exercise.Name, cancellationToken);
 
-            if (foundExercise is not null)
+            if(foundExercise is not null)
             {
                 throw new AlreadyExistsException(ExerciseErrorMessages.ExerciseAlreadyExists);
             }
@@ -45,6 +45,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
             _exerciseRepository.Create(createExercise);
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
+
+            await _cache.RemoveAsync(CacheHelper.GetCacheKeyForAllExercises(), cancellationToken);
 
             var exerciseResponseDto = createExercise.Adapt<ExerciseResponseDto>();
 
@@ -57,12 +59,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
             var cacheKey = CacheHelper.GetCacheKeyForExercise(id);
             var isExerciseInCache = _cache.TryGetValue(cacheKey, out foundExercise);
 
-            if (!isExerciseInCache)
+            if(!isExerciseInCache)
             {
                 foundExercise = await _exerciseRepository.GetOneByAsync(exercise => exercise.Id == id, cancellationToken);
             }
 
-            if (foundExercise is null)
+            if(foundExercise is null)
             {
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
@@ -71,21 +73,33 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
 
+            await _cache.RemoveAsync(CacheHelper.GetCacheKeyForAllExercises(), cancellationToken);
+
             var exerciseResponseDto = foundExercise.Adapt<ExerciseResponseDto>();
 
-            if (!isExerciseInCache)
+            if(isExerciseInCache)
             {
-                return exerciseResponseDto;
+                await _cache.RemoveAsync(cacheKey, cancellationToken);
             }
-
-            await _cache.RemoveAsync(cacheKey, cancellationToken);
 
             return exerciseResponseDto;
         }
 
         public async Task<IEnumerable<ExerciseResponseDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var exercises = await _exerciseRepository.GetAllExercisesAsync(cancellationToken);
+            IEnumerable<Exercise> exercises;
+            var cacheKey = CacheHelper.GetCacheKeyForAllExercises();
+            var isExercisesInCache = _cache.TryGetValue(cacheKey, out exercises);
+
+            if(!isExercisesInCache)
+            {
+                exercises = await _exerciseRepository.GetAllExercisesAsync(cancellationToken);
+            }
+
+            if(exercises is not null)
+            {
+                await exercises.AddListToCacheAsync(_cache, _cacheOptions);
+            }
 
             var result = exercises.Adapt<IEnumerable<ExerciseResponseDto>>();
 
@@ -96,7 +110,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
         {
             var existingExercise = await _exerciseRepository.GetOneByAsync(exercise => exercise.Name == name, cancellationToken);
 
-            if (existingExercise is null)
+            if(existingExercise is null)
             {
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
@@ -110,7 +124,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
         {
             var existingExercise = await _exerciseRepository.GetAllByAsync(exercise => exercise.ExerciseType == type, cancellationToken);
 
-            if (existingExercise is null)
+            if(existingExercise is null)
             {
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
@@ -127,12 +141,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
             var cacheKey = CacheHelper.GetCacheKeyForExercise(id);
             var isExerciseInCache = _cache.TryGetValue(cacheKey, out foundExercise);
 
-            if (!isExerciseInCache)
+            if(!isExerciseInCache)
             {
                 foundExercise = await _exerciseRepository.GetOneByAsync(exercise => exercise.Id == id, cancellationToken);
             }
 
-            if (foundExercise is null)
+            if(foundExercise is null)
             {
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
@@ -146,12 +160,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
 
-            if (isExerciseInCache)
-            {
-                return exerciseResponseDto;
-            }
+            await _cache.RemoveAsync(CacheHelper.GetCacheKeyForAllExercises(), cancellationToken);
 
-            await updateExercise.AddToCacheAsync(_cache, _cacheOptions);
+            if(!isExerciseInCache)
+            {
+                await updateExercise.AddToCacheAsync(_cache, _cacheOptions);
+            }
 
             return exerciseResponseDto;
         }
