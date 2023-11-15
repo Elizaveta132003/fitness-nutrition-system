@@ -27,10 +27,12 @@ namespace Nutrition.Application.Features.Food.Queries.GetByNameFood
 
             if (existingFood is null)
             {
+                _logger.LogInformation($"Product {request.Name} not found");
+
                 throw new NotFoundException(FoodErrorMessages.ProductNotFound);
             }
 
-            _logger.LogInformation($"Product by name {existingFood.Name} received");
+            _logger.LogInformation($"Product {existingFood.Name} was successfully received");
 
             var responseModel = existingFood.Adapt<FoodResponseDto>();
 

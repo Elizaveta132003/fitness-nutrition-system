@@ -27,6 +27,8 @@ namespace Nutrition.Application.Features.Food.Commands.CreateFood
 
             if (foundFood is not null)
             {
+                _logger.LogInformation($"Product {foundFood.Name} already exists");
+
                 throw new AlreadyExistsException(FoodErrorMessages.ProductAlreadyExists);
             }
 
@@ -37,7 +39,7 @@ namespace Nutrition.Application.Features.Food.Commands.CreateFood
 
             await _foodRepository.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Product id created");
+            _logger.LogInformation($"Product {food.Name} was successfully created");
 
             var foodResponseDto = food.Adapt<FoodResponseDto>();
 

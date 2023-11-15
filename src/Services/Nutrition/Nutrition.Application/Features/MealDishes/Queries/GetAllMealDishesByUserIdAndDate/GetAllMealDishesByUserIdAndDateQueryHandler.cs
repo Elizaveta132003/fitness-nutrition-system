@@ -31,10 +31,12 @@ namespace Nutrition.Application.Features.MealDishes.Queries.GetAllMealDishesByUs
 
             if (!foundMealDishes.Any())
             {
+                _logger.LogInformation($"No meal dishes found by user id {request.UserId} and date {request.Date}");
+
                 throw new NotFoundException(MealDishErrorMessages.NoData);
             }
 
-            _logger.LogInformation($"Meal dishes by user id {request.UserId} and date {request.Date} are received");
+            _logger.LogInformation($"Meal dishes by user id {request.UserId} and date {request.Date} were successfully received");
 
             var responseModel = foundMealDishes.Adapt<IEnumerable<MealDishResponseDto>>();
 

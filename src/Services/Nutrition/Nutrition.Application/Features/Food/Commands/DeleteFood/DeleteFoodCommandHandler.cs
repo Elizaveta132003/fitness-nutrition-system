@@ -26,6 +26,8 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
 
             if (foundFood is null)
             {
+                _logger.LogInformation($"Product with id {request.Id} not found");
+
                 throw new NotFoundException(FoodErrorMessages.ProductNotFound);
             }
 
@@ -33,7 +35,7 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
 
             await _foodRepository.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Product is removed");
+            _logger.LogInformation($"Product {foundFood.Name} was successfully deleted");
 
             var foodResponseDto = foundFood.Adapt<FoodResponseDto>();
 

@@ -45,7 +45,7 @@ namespace Nutrition.Application.Features.MealDishes.Commands.CreateMealDish
 
             await _mealDetailRepository.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Meal dish is created");
+            _logger.LogInformation($"Meal dish with id {mealDish.Id} was successfully created");
 
             await _updateCaloriesClient.UpdateCaloriesAsync(request.MealDishRequestDto, cancellationToken);
 

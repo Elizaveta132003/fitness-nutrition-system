@@ -27,6 +27,8 @@ namespace Nutrition.Application.Features.MealDishes.Commands.DeleteMealDish
 
             if (foundMealDish is null)
             {
+                _logger.LogInformation($"Meal dish with id {request.Id} not found");
+
                 throw new NotFoundException(MealDishErrorMessages.MealDishNotFound);
             }
 
@@ -34,7 +36,7 @@ namespace Nutrition.Application.Features.MealDishes.Commands.DeleteMealDish
 
             await _mealDishRepository.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Meal dish is removed");
+            _logger.LogInformation($"Meal dish with id {foundMealDish.Id} was successfully deleted");
 
             var mealDishResponseDto = foundMealDish.Adapt<MealDishResponseDto>();
 

@@ -26,6 +26,8 @@ namespace Nutrition.Application.Features.Food.Commands.UpdateFood
 
             if (foundFood is null)
             {
+                _logger.LogInformation($"Product {request.FoodRequestDto.Name} already exists");
+
                 throw new NotFoundException(FoodErrorMessages.ProductAlreadyExists);
             }
 
@@ -36,7 +38,7 @@ namespace Nutrition.Application.Features.Food.Commands.UpdateFood
 
             await _foodRepository.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Product is updated");
+            _logger.LogInformation($"Product {food.Name} was successfully updated");
 
             var foodResponseDto = food.Adapt<FoodResponseDto>();
 

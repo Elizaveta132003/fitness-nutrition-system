@@ -22,7 +22,7 @@ namespace Nutrition.Application.Features.Food.Queries.GetAllFood
         {
             var food = await _foodRepository.GetAllFoodAsync(cancellationToken);
 
-            _logger.LogInformation("Products received");
+            _logger.LogInformation("Products were successfully received");
 
             var foodResponseDto = food.Adapt<IEnumerable<FoodResponseDto>>();
 
