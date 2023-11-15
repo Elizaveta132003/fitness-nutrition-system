@@ -1,6 +1,6 @@
 ﻿using Workouts.BusinessLogic.Dtos.RequestDtos;
 
-namespace Workouts.BusinessLogic.Services.Implementations
+namespace Workouts.BusinessLogic.Services.Interfaces
 {
     public interface IUpdateCaloriesClient
     {
