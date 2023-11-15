@@ -14,6 +14,7 @@ builder.Services.ConfigureMongo(builder.Configuration);
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.ConfigureLogger(builder);
 
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
