@@ -7,24 +7,28 @@ services:
         restart: unless-stopped
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+
     nutrition:
         ports:
             - 7001:80
         restart: unless-stopped
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+
     workouts:
         ports:
             - 8001:80
         restart: unless-stopped
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+
     identity:
         ports:
             - 9001:80
         restart: unless-stopped
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+
     mongodb:
         ports:
             - 27017:27017
@@ -32,11 +36,13 @@ services:
             - MONGO_INITDB_ROOT_USERNAME=root
             - MONGO_INITDB_ROOT_PASSWORD=mongo123
         restart: unless-stopped
+
     kibana:
         ports:
             - 5601:5601
         environment:
             - ELASTICSEARCH_URL:http://localhost:9200
+
     elasticsearch:
         ports:
             - 9200:9200
@@ -46,5 +52,6 @@ services:
             - discovery.type=single-node
         volumes:
             - elasticsearch-data:/usr/share/elasticsearch/data
+
 volumes:   
   elasticsearch-data:
