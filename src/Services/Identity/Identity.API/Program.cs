@@ -6,7 +6,7 @@ using Identity.Infrastructure.Configurations;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.ConfigureCors();
+builder.Services.ConfigureCors(builder.Configuration);
 builder.Services.ConfigureIdentity(builder.Configuration);
 builder.Services.ConfigureServices();
 builder.Services.AddEndpointsApiExplorer();
