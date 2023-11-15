@@ -62,7 +62,7 @@
 				}
 			],
 			"UpstreamPathTemplate": "/words/caloriesHub/{everything}",
-			"UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+			"UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
 			"Priority": 1
 		}
 	],
