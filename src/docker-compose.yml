@@ -63,3 +63,6 @@ services:
         build:
             context: "."
             dockerfile: /Services/Gateway/OcelotGateway/Dockerfile
+    redis:
+        container_name: Redis
+        image: redis:latest

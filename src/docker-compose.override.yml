@@ -68,3 +68,9 @@ services:
             - 9000:9000
         environment:
             KAFKA_BROKERCONNECT: kafka:29092   
+    redis:
+        ports: 
+            - 6379:6379
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+        restart: unless-stopped
