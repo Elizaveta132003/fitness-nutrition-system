@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Logging;
 using Workouts.BusinessLogic.Dtos.RequestDtos;
 using Workouts.BusinessLogic.Dtos.ResponseDtos;
 using Workouts.BusinessLogic.Exceptions;
@@ -13,10 +14,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
     public class ExerciseService : IExerciseService
     {
         private readonly IExerciseRepository _exerciseRepository;
+        private readonly ILogger<ExerciseService> _logger;
 
-        public ExerciseService(IExerciseRepository exerciseRepository)
+        public ExerciseService(IExerciseRepository exerciseRepository, ILogger<ExerciseService> logger)
         {
             _exerciseRepository = exerciseRepository;
+            _logger = logger;
         }
 
         public async Task<ExerciseResponseDto> CreateAsync(ExerciseRequestDto exercise,
@@ -27,6 +30,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundExercise is not null)
             {
+                _logger.LogInformation("Exercise creation failed");
+
                 throw new AlreadyExistsException(ExerciseErrorMessages.ExerciseAlreadyExists);
             }
 
@@ -36,6 +41,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
             _exerciseRepository.Create(createExercise);
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Exercise with id {createExercise.Id} created successfully");
 
             var exerciseResponseDto = createExercise.Adapt<ExerciseResponseDto>();
 
@@ -48,12 +55,16 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundExercise is null)
             {
+                _logger.LogInformation($"Exercise with id {id} not found;");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
 
             _exerciseRepository.Delete(foundExercise);
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Exercise {foundExercise.Name} was successfully deleted");
 
             var exerciseResponseDto = foundExercise.Adapt<ExerciseResponseDto>();
 
@@ -63,6 +74,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
         public async Task<IEnumerable<ExerciseResponseDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var exercises = await _exerciseRepository.GetAllExercisesAsync(cancellationToken);
+
+            _logger.LogInformation("Exercises were successfully received");
 
             var result = exercises.Adapt<IEnumerable<ExerciseResponseDto>>();
 
@@ -75,8 +88,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (existingExercise is null)
             {
+                _logger.LogInformation($"Exercise {name} not found");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
+
+            _logger.LogInformation($"Exercise {name} was successfully received");
 
             var result = existingExercise.Adapt<ExerciseResponseDto>();
 
@@ -89,8 +106,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (existingExercise is null)
             {
+                _logger.LogInformation($"Exercises with type {type} not found");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
+
+            _logger.LogInformation($"Exercises by type {type} were successfully received");
 
             var result = existingExercise.Adapt<IEnumerable<ExerciseResponseDto>>();
 
@@ -104,6 +125,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundExercise is null)
             {
+                _logger.LogInformation($"Exercise with id {id} not found");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
 
@@ -113,6 +136,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
             _exerciseRepository.Update(updateExercise);
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Exercise {updateExercise.Name} was successfully updated");
 
             var exerciseResponseDto = updateExercise.Adapt<ExerciseResponseDto>();
 

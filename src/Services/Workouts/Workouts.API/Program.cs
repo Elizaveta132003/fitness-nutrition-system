@@ -17,6 +17,7 @@ builder.Services.AddDbContext<WorkoutDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.ConfigureLogger(builder);
 
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
