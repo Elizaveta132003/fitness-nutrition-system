@@ -31,7 +31,7 @@ if (!app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUiOptions =>
     {
-        swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Workout API v1");
+        swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Workout API");
     });
 }
 
