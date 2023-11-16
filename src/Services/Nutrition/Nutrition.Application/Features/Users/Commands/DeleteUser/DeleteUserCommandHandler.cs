@@ -27,7 +27,7 @@ namespace Nutrition.Application.Features.Users.Commands.DeleteUser
 
             if (foundUser is null)
             {
-                _logger.LogInformation($"User with id {request.Id} not found");
+                _logger.LogError($"User with id {request.Id} not found");
 
                 throw new NotFoundException(UserErrorMessages.UserNotFound);
             }

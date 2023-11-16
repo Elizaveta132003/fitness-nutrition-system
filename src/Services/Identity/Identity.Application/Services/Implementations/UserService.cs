@@ -53,7 +53,7 @@ namespace Identity.Application.Services.Implementations
 
             if (!identityResult.Succeeded)
             {
-                _logger.LogInformation("User registration failed.");
+                _logger.LogError("User registration failed.");
 
                 throw new BadRequestException(ErrorMessages.UserRegistrationFailed);
             }
@@ -88,7 +88,7 @@ namespace Identity.Application.Services.Implementations
 
             if (existingUser == null)
             {
-                _logger.LogInformation($"User with id {id} not found.");
+                _logger.LogError($"User with id {id} not found.");
 
                 throw new NotFoundException(ErrorMessages.UserIdNotFound);
             }
@@ -119,7 +119,7 @@ namespace Identity.Application.Services.Implementations
 
             if (users == null || users.Count == 0)
             {
-                _logger.LogInformation("No users found.");
+                _logger.LogError("No users found.");
 
                 return new List<ResponseAppUserDto>();
             }
@@ -144,7 +144,7 @@ namespace Identity.Application.Services.Implementations
 
             if (existingUser == null)
             {
-                _logger.LogInformation("User not found for authorization");
+                _logger.LogError("User not found for authorization");
 
                 throw new NotFoundException(ErrorMessages.UserNotFound);
             }

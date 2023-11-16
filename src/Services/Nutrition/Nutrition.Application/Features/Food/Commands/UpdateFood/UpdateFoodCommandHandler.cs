@@ -26,7 +26,7 @@ namespace Nutrition.Application.Features.Food.Commands.UpdateFood
 
             if (foundFood is null)
             {
-                _logger.LogInformation($"Product {request.FoodRequestDto.Name} already exists");
+                _logger.LogError($"Product {request.FoodRequestDto.Name} already exists");
 
                 throw new NotFoundException(FoodErrorMessages.ProductAlreadyExists);
             }

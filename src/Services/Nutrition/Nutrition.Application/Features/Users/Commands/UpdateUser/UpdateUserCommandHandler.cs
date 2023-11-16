@@ -28,7 +28,7 @@ namespace Nutrition.Application.Features.Users.Commands.UpdateUser
 
             if (foundUser is null)
             {
-                _logger.LogInformation($"User {request.UserRequestDto.Username} not found");
+                _logger.LogError($"User {request.UserRequestDto.Username} not found");
 
                 throw new NotFoundException(UserErrorMessages.UserNotFound);
             }

@@ -27,7 +27,7 @@ namespace Nutrition.Application.Features.Food.Queries.GetByNameFood
 
             if (existingFood is null)
             {
-                _logger.LogInformation($"Product {request.Name} not found");
+                _logger.LogError($"Product {request.Name} not found");
 
                 throw new NotFoundException(FoodErrorMessages.ProductNotFound);
             }

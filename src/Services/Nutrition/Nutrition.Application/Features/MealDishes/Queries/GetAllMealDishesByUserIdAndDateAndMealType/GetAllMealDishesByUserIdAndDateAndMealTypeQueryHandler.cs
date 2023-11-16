@@ -33,7 +33,7 @@ namespace Nutrition.Application.Features.MealDishes.Queries.GetAllMealDishesByUs
 
             if (!foundMealDishes.Any())
             {
-                _logger.LogInformation($"No meal dishes found by user id {request.UserId}, date {request.Date} and meal type {request.MealType}");
+                _logger.LogError($"No meal dishes found by user id {request.UserId}, date {request.Date} and meal type {request.MealType}");
 
                 throw new NotFoundException(MealDishErrorMessages.NoData);
             }

@@ -27,7 +27,7 @@ namespace Nutrition.Application.Features.MealDishes.Commands.DeleteMealDish
 
             if (foundMealDish is null)
             {
-                _logger.LogInformation($"Meal dish with id {request.Id} not found");
+                _logger.LogError($"Meal dish with id {request.Id} not found");
 
                 throw new NotFoundException(MealDishErrorMessages.MealDishNotFound);
             }

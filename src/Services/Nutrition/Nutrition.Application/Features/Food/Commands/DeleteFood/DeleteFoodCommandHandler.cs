@@ -26,7 +26,7 @@ namespace Nutrition.Application.Features.Food.Commands.DeleteFood
 
             if (foundFood is null)
             {
-                _logger.LogInformation($"Product with id {request.Id} not found");
+                _logger.LogError($"Product with id {request.Id} not found");
 
                 throw new NotFoundException(FoodErrorMessages.ProductNotFound);
             }

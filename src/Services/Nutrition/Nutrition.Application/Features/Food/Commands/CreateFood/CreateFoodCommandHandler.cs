@@ -27,7 +27,7 @@ namespace Nutrition.Application.Features.Food.Commands.CreateFood
 
             if (foundFood is not null)
             {
-                _logger.LogInformation($"Product {foundFood.Name} already exists");
+                _logger.LogError($"Product {foundFood.Name} already exists");
 
                 throw new AlreadyExistsException(FoodErrorMessages.ProductAlreadyExists);
             }

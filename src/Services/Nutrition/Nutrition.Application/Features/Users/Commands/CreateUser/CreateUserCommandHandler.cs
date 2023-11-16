@@ -32,7 +32,7 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
 
             if (foundUser is not null)
             {
-                _logger.LogInformation($"User {request.UserRequestDto.Username} not found");
+                _logger.LogError($"User {request.UserRequestDto.Username} not found");
 
                 throw new AlreadyExistsException(UserErrorMessages.UserAlreadyExists);
             }

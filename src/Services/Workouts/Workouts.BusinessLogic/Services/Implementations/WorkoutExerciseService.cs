@@ -65,7 +65,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundWorkoutExercise is null)
             {
-                _logger.LogInformation($"Workout exercise with id {id} not found");
+                _logger.LogError($"Workout exercise with id {id} not found");
 
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }
@@ -91,7 +91,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (!foundWorkoutExercise.Any())
             {
-                _logger.LogInformation($"Workout exercises by user id {userId}, date {date} and type {type} not found");
+                _logger.LogError($"Workout exercises by user id {userId}, date {date} and type {type} not found");
 
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }
@@ -112,7 +112,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (!foundWorkoutExercise.Any())
             {
-                _logger.LogInformation($"Workout exercises by user id {userId} and date {date} not found");
+                _logger.LogError($"Workout exercises by user id {userId} and date {date} not found");
 
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }
@@ -132,7 +132,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundWorkoutExercise is null)
             {
-                _logger.LogInformation($"Workout exercise with id {id} not found");
+                _logger.LogError($"Workout exercise with id {id} not found");
 
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }

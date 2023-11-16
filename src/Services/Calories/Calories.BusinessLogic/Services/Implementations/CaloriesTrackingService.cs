@@ -42,7 +42,7 @@ namespace Calories.BusinessLogic.Services.Implementations
 
             if (existingCaloriesTracking is null)
             {
-                _logger.LogInformation($"Calories tracking with id {id} not found");
+                _logger.LogError($"Calories tracking with id {id} not found");
 
                 throw new NotFoundException(CaloriesTrackingErrorMessages.CaloriesTrackingNotFound);
             }
@@ -73,7 +73,7 @@ namespace Calories.BusinessLogic.Services.Implementations
 
             if (existingCaloriesTracking is null)
             {
-                _logger.LogInformation($"Calories tracking with id {id} not found");
+                _logger.LogError($"Calories tracking with id {id} not found");
 
                 throw new NotFoundException(CaloriesTrackingErrorMessages.CaloriesTrackingNotFound);
             }

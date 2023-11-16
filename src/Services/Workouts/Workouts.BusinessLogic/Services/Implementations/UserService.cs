@@ -31,7 +31,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundUser is not null)
             {
-                _logger.LogInformation($"User {foundUser.Username} already exists");
+                _logger.LogError($"User {foundUser.Username} already exists");
 
                 throw new AlreadyExistsException(UserErrorMessages.UserAlreadyExists);
             }
@@ -64,7 +64,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundUser is null)
             {
-                _logger.LogInformation($"User with id {id} not found");
+                _logger.LogError($"User with id {id} not found");
 
                 throw new NotFoundException(UserErrorMessages.UserNotFound);
             }
@@ -86,7 +86,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundUser is null)
             {
-                _logger.LogInformation($"User with id {id} not found");
+                _logger.LogError($"User with id {id} not found");
 
                 throw new NotFoundException(UserErrorMessages.UserNotFound);
             }

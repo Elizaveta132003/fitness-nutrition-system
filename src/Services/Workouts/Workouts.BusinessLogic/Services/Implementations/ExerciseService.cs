@@ -30,7 +30,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundExercise is not null)
             {
-                _logger.LogInformation("Exercise creation failed");
+                _logger.LogError("Exercise creation failed");
 
                 throw new AlreadyExistsException(ExerciseErrorMessages.ExerciseAlreadyExists);
             }
@@ -55,7 +55,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundExercise is null)
             {
-                _logger.LogInformation($"Exercise with id {id} not found;");
+                _logger.LogError($"Exercise with id {id} not found;");
 
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
@@ -88,7 +88,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (existingExercise is null)
             {
-                _logger.LogInformation($"Exercise {name} not found");
+                _logger.LogError($"Exercise {name} not found");
 
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
@@ -106,7 +106,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (existingExercise is null)
             {
-                _logger.LogInformation($"Exercises with type {type} not found");
+                _logger.LogError($"Exercises with type {type} not found");
 
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
@@ -125,7 +125,7 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundExercise is null)
             {
-                _logger.LogInformation($"Exercise with id {id} not found");
+                _logger.LogError($"Exercise with id {id} not found");
 
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
