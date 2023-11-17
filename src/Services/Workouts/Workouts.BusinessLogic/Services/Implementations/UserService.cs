@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Logging;
 using Workouts.BusinessLogic.Dtos.RequestDtos;
 using Workouts.BusinessLogic.Dtos.ResponseDtos;
 using Workouts.BusinessLogic.Exceptions;
@@ -13,11 +14,15 @@ namespace Workouts.BusinessLogic.Services.Implementations
     {
         private readonly IUserRepository _userRepository;
         private readonly IExercisesDiaryRepository _exercisesDiaryRepository;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(IUserRepository userRepository, IExercisesDiaryRepository exercisesDiaryRepository)
+        public UserService(IUserRepository userRepository,
+            IExercisesDiaryRepository exercisesDiaryRepository,
+            ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _exercisesDiaryRepository = exercisesDiaryRepository;
+            _logger = logger;
         }
 
         public async Task<UserResponseDto> CreateAsync(UserRequestDto user, CancellationToken cancellationToken = default)
@@ -26,6 +31,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundUser is not null)
             {
+                _logger.LogError($"User {foundUser.Username} already exists");
+
                 throw new AlreadyExistsException(UserErrorMessages.UserAlreadyExists);
             }
 
@@ -44,6 +51,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             await _exercisesDiaryRepository.SaveChangesAsync(cancellationToken);
 
+            _logger.LogInformation($"User {createUser.Username} and diary with id {exercisesDiary.Id} were successfully created");
+
             var userResponseDto = createUser.Adapt<UserResponseDto>();
 
             return userResponseDto;
@@ -55,12 +64,16 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundUser is null)
             {
+                _logger.LogError($"User with id {id} not found");
+
                 throw new NotFoundException(UserErrorMessages.UserNotFound);
             }
 
             _userRepository.Delete(foundUser);
 
             await _userRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"User {foundUser.Username} was successfully deleted");
 
             var userResponseDto = foundUser.Adapt<UserResponseDto>();
 
@@ -73,6 +86,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundUser is null)
             {
+                _logger.LogError($"User with id {id} not found");
+
                 throw new NotFoundException(UserErrorMessages.UserNotFound);
             }
 
@@ -81,6 +96,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
             _userRepository.Update(updateUser);
 
             await _userRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"User {updateUser.Username} was successfully updated");
 
             var userResponseDto = updateUser.Adapt<UserResponseDto>();
 

@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Nutrition.Application.Dtos.ResponseDtos;
 using Nutrition.Application.Exceptions;
 using Nutrition.Application.Helpers;
@@ -11,10 +12,13 @@ namespace Nutrition.Application.Features.MealDishes.Queries.GetAllMealDishesByUs
         IRequestHandler<GetAllMealDishesByUserIdAndDateAndMealTypeQuery, IEnumerable<MealDishResponseDto>>
     {
         private readonly IMealDishRepository _mealDishRepository;
+        private readonly ILogger<GetAllMealDishesByUserIdAndDateAndMealTypeQueryHandler> _logger;
 
-        public GetAllMealDishesByUserIdAndDateAndMealTypeQueryHandler(IMealDishRepository mealDishRepository)
+        public GetAllMealDishesByUserIdAndDateAndMealTypeQueryHandler(IMealDishRepository mealDishRepository,
+            ILogger<GetAllMealDishesByUserIdAndDateAndMealTypeQueryHandler> logger)
         {
             _mealDishRepository = mealDishRepository;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<MealDishResponseDto>> Handle
@@ -29,8 +33,12 @@ namespace Nutrition.Application.Features.MealDishes.Queries.GetAllMealDishesByUs
 
             if (!foundMealDishes.Any())
             {
+                _logger.LogError($"No meal dishes found by user id {request.UserId}, date {request.Date} and meal type {request.MealType}");
+
                 throw new NotFoundException(MealDishErrorMessages.NoData);
             }
+
+            _logger.LogInformation($"Meal dishes by user id {request.UserId}, date {request.Date} and meal type {request.MealType} are received");
 
             var responseModel = foundMealDishes.Adapt<IEnumerable<MealDishResponseDto>>();
 

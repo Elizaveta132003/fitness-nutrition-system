@@ -1,4 +1,5 @@
-﻿using Mapster;
+using Mapster;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Workouts.BusinessLogic.Dtos.RequestDtos;
@@ -17,13 +18,15 @@ namespace Workouts.BusinessLogic.Services.Implementations
     public class ExerciseService : IExerciseService
     {
         private readonly IExerciseRepository _exerciseRepository;
+        private readonly ILogger<ExerciseService> _logger;
         private readonly IDistributedCache _cache;
         private readonly IOptions<RedisCacheOptions> _cacheOptions;
 
-        public ExerciseService(IExerciseRepository exerciseRepository, IDistributedCache cache,
+        public ExerciseService(IExerciseRepository exerciseRepository, ILogger<ExerciseService> logger,IDistributedCache cache,
             IOptions<RedisCacheOptions> options)
         {
             _exerciseRepository = exerciseRepository;
+            _logger = logger;
             _cache = cache;
             _cacheOptions = options;
         }
@@ -36,6 +39,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if(foundExercise is not null)
             {
+                _logger.LogError("Exercise creation failed");
+
                 throw new AlreadyExistsException(ExerciseErrorMessages.ExerciseAlreadyExists);
             }
 
@@ -45,6 +50,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
             _exerciseRepository.Create(createExercise);
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Exercise with id {createExercise.Id} created successfully");
 
             await _cache.RemoveAsync(CacheHelper.GetCacheKeyForAllExercises(), cancellationToken);
 
@@ -66,12 +73,16 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if(foundExercise is null)
             {
+                _logger.LogError($"Exercise with id {id} not found;");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
 
             _exerciseRepository.Delete(foundExercise);
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Exercise {foundExercise.Name} was successfully deleted");
 
             await _cache.RemoveAsync(CacheHelper.GetCacheKeyForAllExercises(), cancellationToken);
 
@@ -101,6 +112,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
                 await exercises.AddListToCacheAsync(_cache, _cacheOptions);
             }
 
+            _logger.LogInformation("Exercises were successfully received");
+
             var result = exercises.Adapt<IEnumerable<ExerciseResponseDto>>();
 
             return result;
@@ -112,8 +125,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if(existingExercise is null)
             {
+                _logger.LogError($"Exercise {name} not found");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
+
+            _logger.LogInformation($"Exercise {name} was successfully received");
 
             var result = existingExercise.Adapt<ExerciseResponseDto>();
 
@@ -126,8 +143,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if(existingExercise is null)
             {
+                _logger.LogError($"Exercises with type {type} not found");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
+
+            _logger.LogInformation($"Exercises by type {type} were successfully received");
 
             var result = existingExercise.Adapt<IEnumerable<ExerciseResponseDto>>();
 
@@ -148,6 +169,8 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if(foundExercise is null)
             {
+                _logger.LogError($"Exercise with id {id} not found");
+
                 throw new NotFoundException(ExerciseErrorMessages.ExerciseNotFound);
             }
 
@@ -159,6 +182,10 @@ namespace Workouts.BusinessLogic.Services.Implementations
             var exerciseResponseDto = updateExercise.Adapt<ExerciseResponseDto>();
 
             await _exerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Exercise {updateExercise.Name} was successfully updated");
+
+            var exerciseResponseDto = updateExercise.Adapt<ExerciseResponseDto>();
 
             await _cache.RemoveAsync(CacheHelper.GetCacheKeyForAllExercises(), cancellationToken);
 

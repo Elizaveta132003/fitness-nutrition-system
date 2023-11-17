@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Mapster;
+using Microsoft.Extensions.Logging;
 using Workouts.BusinessLogic.Dtos.RequestDtos;
 using Workouts.BusinessLogic.Dtos.ResponseDtos;
 using Workouts.BusinessLogic.Exceptions;
@@ -14,12 +15,15 @@ namespace Workouts.BusinessLogic.Services.GrpcServices
     {
         private readonly CaloriesService.CaloriesServiceClient _caloriesServiceClient;
         private readonly IExerciseRepository _exerciseRepository;
+        private readonly ILogger<UpdateCaloriesClient> _logger;
 
         public UpdateCaloriesClient(CaloriesService.CaloriesServiceClient caloriesServiceClient,
-            IExerciseRepository exerciseRepository)
+            IExerciseRepository exerciseRepository,
+            ILogger<UpdateCaloriesClient> logger)
         {
             _caloriesServiceClient = caloriesServiceClient;
             _exerciseRepository = exerciseRepository;
+            _logger = logger;
         }
 
         public async Task UpdateCaloriesAsync(WorkoutExerciseRequestDto workoutExerciseRequestDto,
@@ -36,6 +40,8 @@ namespace Workouts.BusinessLogic.Services.GrpcServices
             };
 
             var reply = await _caloriesServiceClient.UpdateCaloriesAsync(request);
+
+            _logger.LogInformation("Calories updated successfully");
         }
 
         private async Task<ExerciseResponseDto> GetExerciseByIdAsync(Guid id)

@@ -43,6 +43,8 @@ namespace Calories.BusinessLogic.Services.GrpcServices
 
             await _caloriesTrackingRepository.UpdateAsync(existingCaloriesTracking);
 
+            _logger.LogInformation($"Calories treacking with id {existingCaloriesTracking.Id} was successfully updated");
+
             var updateCaloriesResponse = updateCaloriesRequest.Adapt<UpdateCaloriesResponse>();
 
             return updateCaloriesResponse;
@@ -67,6 +69,8 @@ namespace Calories.BusinessLogic.Services.GrpcServices
 
 
             await _caloriesTrackingRepository.CreateAsync(caloriesTracking);
+
+            _logger.LogInformation($"Calories treacking with id {caloriesTracking.Id} was successfully created");
 
             var updateCaloriesResponse = updateCaloriesRequest.Adapt<UpdateCaloriesResponse>();
 

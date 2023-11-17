@@ -16,6 +16,7 @@ builder.Services.ConfigureDatabaseServices(builder.Configuration);
 builder.Services.AddDbContext<WorkoutDbContext>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.ConfigureLogger(builder);
 builder.Services.ConfigureRedis(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 

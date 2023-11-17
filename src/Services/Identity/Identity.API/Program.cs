@@ -16,6 +16,8 @@ builder.Services.ConfigureKafka(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddAuthenticationConfiguration(builder.Configuration);
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.ConfigureLogger(builder);
 
 var app = builder.Build();
 

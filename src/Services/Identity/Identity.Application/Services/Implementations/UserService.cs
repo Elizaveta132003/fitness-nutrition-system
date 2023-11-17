@@ -21,7 +21,7 @@ namespace Identity.Application.Services.Implementations
     public class UserService : IUserService
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly ILogger<IUserService> _logger;
+        private readonly ILogger<UserService> _logger;
         private readonly ITokenService _tokenService;
         private readonly IKafkaMessageBus<string, UserMessage> _bus;
 
@@ -31,7 +31,7 @@ namespace Identity.Application.Services.Implementations
         /// <param name="userManager">The user manager for managing user data.</param>
         /// <param name="logger">The logger for logging service events.</param>
         /// <param name="tokenService">The token service for creating authentication tokens.</param>
-        public UserService(UserManager<AppUser> userManager, ILogger<IUserService> logger,
+        public UserService(UserManager<AppUser> userManager, ILogger<UserService> logger,
             ITokenService tokenService, IKafkaMessageBus<string, UserMessage> bus)
         {
             _userManager = userManager;
@@ -53,12 +53,14 @@ namespace Identity.Application.Services.Implementations
 
             if (!identityResult.Succeeded)
             {
-                _logger.LogInformation("User was not successfully created");
+                _logger.LogError("User registration failed.");
 
                 throw new BadRequestException(ErrorMessages.UserRegistrationFailed);
             }
 
             await _userManager.AddToRoleAsync(user, Role.user.ToString());
+
+            _logger.LogInformation($"User {user.UserName} was successfully created");
 
             var createUserMessage = new UserMessage()
             {
@@ -86,13 +88,15 @@ namespace Identity.Application.Services.Implementations
 
             if (existingUser == null)
             {
-                _logger.LogError($"User with ID {id} not found.");
+                _logger.LogError($"User with id {id} not found.");
 
                 throw new NotFoundException(ErrorMessages.UserIdNotFound);
             }
 
             var responseModel = existingUser.Adapt<ResponseAppUserDto>();
             await _userManager.DeleteAsync(existingUser);
+
+            _logger.LogInformation($"User {existingUser.UserName} with id {existingUser.Id} was successfully deleted");
 
             var deleteUserMessage = new UserMessage()
             {
@@ -115,13 +119,14 @@ namespace Identity.Application.Services.Implementations
 
             if (users == null || users.Count == 0)
             {
-                _logger.LogInformation("No users found.");
+                _logger.LogError("No users found.");
 
                 return new List<ResponseAppUserDto>();
             }
 
             var usersDto = users.Adapt<List<ResponseAppUserDto>>();
-            _logger.LogInformation("Users was successfully received.");
+
+            _logger.LogInformation("Users was successfully received");
 
             return usersDto;
         }
@@ -139,6 +144,8 @@ namespace Identity.Application.Services.Implementations
 
             if (existingUser == null)
             {
+                _logger.LogError("User not found for authorization");
+
                 throw new NotFoundException(ErrorMessages.UserNotFound);
             }
 
@@ -146,8 +153,12 @@ namespace Identity.Application.Services.Implementations
 
             if (!checkPassword)
             {
+                _logger.LogInformation($"Incorrect password for user {existingUser.UserName}");
+
                 throw new UnauthorizedAccessException(ErrorMessages.IncorrectPassword);
             }
+
+            _logger.LogInformation($"User {existingUser.UserName} successfully authorized");
 
             var token = await _tokenService.CreateTokenAsync(existingUser);
             var resultModel = existingUser.Adapt<ResponseAppUserAuthorizationDto>();
