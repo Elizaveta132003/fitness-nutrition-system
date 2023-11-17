@@ -8,7 +8,7 @@ namespace Workouts.API.Attributes
     {
         public AdminAttribute()
         {
-            Roles = Role.Admin.ToString();
+            Roles = Role.Admin.ToString().ToLower();
         }
     }
 }

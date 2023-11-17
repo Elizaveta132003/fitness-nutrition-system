@@ -8,7 +8,7 @@ namespace Workouts.API.Configurations
     public static class ConfigureAuthentication
     {
         public static void AddConfigureAuthentication(
-           this IServiceCollection services, IConfiguration configuration)
+            this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication
             (

@@ -6,7 +6,7 @@ using Workouts.BusinessLogic.Dtos.ResponseDtos;
 using Workouts.BusinessLogic.Exceptions;
 using Workouts.BusinessLogic.Helpers;
 using Workouts.BusinessLogic.Protos;
-using Workouts.BusinessLogic.Services.Implementations;
+using Workouts.BusinessLogic.Services.Interfaces;
 using Workouts.DataAccess.Repositories.Interfaces;
 
 namespace Workouts.BusinessLogic.Services.GrpcServices
