@@ -27,10 +27,11 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<MealDishResponseDto>> CreateMealDishAsync(MealDishRequestDto mealDishRequestDto)
+        public async Task<ActionResult<MealDishResponseDto>> CreateMealDishAsync(MealDishRequestDto mealDishRequestDto,
+            CancellationToken cancellationToken = default)
         {
             var command = new CreateMealDishCommand(mealDishRequestDto);
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command, cancellationToken);
 
             return Ok(result);
         }
@@ -41,10 +42,11 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<MealDishRequestDto>> DeleteMealDishAsync(Guid id)
+        public async Task<ActionResult<MealDishRequestDto>> DeleteMealDishAsync(Guid id,
+             CancellationToken cancellationToken = default)
         {
             var command = new DeleteMealDishCommand(id);
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command, cancellationToken);
 
             return Ok(result);
         }
@@ -55,10 +57,10 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<MealDishResponseDto>>> GetAllMealDishesByUserIdAndDate(
-            Guid userId, DateTime date)
+            Guid userId, DateTime date, CancellationToken cancellationToken = default)
         {
             var query = new GetAllMealDishesByUserIdAndDateQuery(userId, date);
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query, cancellationToken);
 
             return Ok(result);
         }
@@ -69,10 +71,10 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<MealDishResponseDto>>> GetAllMealDishesByUserIdAndDateAndMealType(
-           Guid userId, DateTime date, MealType type)
+           Guid userId, DateTime date, MealType type, CancellationToken cancellationToken = default)
         {
             var query = new GetAllMealDishesByUserIdAndDateAndMealTypeQuery(userId, date, type);
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query, cancellationToken);
 
             return Ok(result);
         }

@@ -30,10 +30,11 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<FoodResponseDto>> CreateFoodAsync(FoodRequestDto foodRequestDto)
+        public async Task<ActionResult<FoodResponseDto>> CreateFoodAsync(FoodRequestDto foodRequestDto,
+            CancellationToken cancellationToken = default)
         {
             var command = new CreateFoodCommand(foodRequestDto);
-            var result = await _meadiator.Send(command);
+            var result = await _meadiator.Send(command, cancellationToken);
 
             return Ok(result);
         }
@@ -44,10 +45,11 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<FoodResponseDto>> DeleteFoodAsync(Guid id)
+        public async Task<ActionResult<FoodResponseDto>> DeleteFoodAsync(Guid id,
+            CancellationToken cancellationToken = default)
         {
             var command = new DeleteFoodCommand(id);
-            var result = await _meadiator.Send(command);
+            var result = await _meadiator.Send(command, cancellationToken);
 
             return Ok(result);
         }
@@ -58,10 +60,11 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<FoodResponseDto>> UpdateFoodAsync(Guid id, FoodRequestDto foodRequestDto)
+        public async Task<ActionResult<FoodResponseDto>> UpdateFoodAsync(Guid id, FoodRequestDto foodRequestDto,
+            CancellationToken cancellationToken = default)
         {
             var command = new UpdateFoodCommand(id, foodRequestDto);
-            var result = await _meadiator.Send(command);
+            var result = await _meadiator.Send(command, cancellationToken);
 
             return Ok(result);
         }
@@ -71,10 +74,10 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<FoodResponseDto>>> GetAllFoodAsync()
+        public async Task<ActionResult<IEnumerable<FoodResponseDto>>> GetAllFoodAsync(CancellationToken cancellationToken = default)
         {
             var query = new GetAllFoodQuery();
-            var result = await _meadiator.Send(query);
+            var result = await _meadiator.Send(query, cancellationToken);
 
             return Ok(result);
         }
@@ -84,10 +87,11 @@ namespace Nutrition.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<FoodResponseDto>> GetByNameFoodAsync(string name)
+        public async Task<ActionResult<FoodResponseDto>> GetByNameFoodAsync(string name,
+            CancellationToken cancellationToken = default)
         {
             var query = new GetByNameFoodQuery(name);
-            var result = await _meadiator.Send(query);
+            var result = await _meadiator.Send(query, cancellationToken);
 
             return Ok(result);
         }

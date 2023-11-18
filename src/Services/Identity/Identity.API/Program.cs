@@ -7,8 +7,7 @@ using Shared.Kafka;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
-builder.Services.ConfigureCors();
+builder.Services.ConfigureCors(builder.Configuration);
 builder.Services.AddKafkaMessageBus();
 builder.Services.ConfigureIdentity(builder.Configuration);
 builder.Services.ConfigureServices();
