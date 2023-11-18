@@ -16,7 +16,7 @@ namespace Nutrition.API.SignalR
             _backgroundJobsService = backgroundJobsService;
         }
 
-        public async Task SendData(string userName)
+        public async Task SendDataAsync(string userName)
         {
             var currentDate = DateTime.Now;
             var result = await _backgroundJobsService.CalculateCaloriesForUserAndDayAsync(userName, currentDate);

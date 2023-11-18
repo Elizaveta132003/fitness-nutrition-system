@@ -41,13 +41,13 @@ namespace Nutrition.Application.Services
             }
 
             var calories = (await Task.WhenAll(foundMealDishes.Select(
-                async mealDish => await GetFoodCalories(mealDish.FoodId) * mealDish.ServingSize)))
+                async mealDish => await GetFoodCaloriesAsync(mealDish.FoodId) * mealDish.ServingSize)))
                 .Sum();
 
             return calories;
         }
 
-        private async Task<double> GetFoodCalories(Guid id)
+        private async Task<double> GetFoodCaloriesAsync(Guid id)
         {
             var food = await _foodRepository.GetOneByAsync(food => food.Id == id);
 

@@ -2,6 +2,6 @@
 {
     public interface IMyHubHelper
     {
-        Task SendData(string userName);
+        Task SendDataAsync(string userName);
     }
 }

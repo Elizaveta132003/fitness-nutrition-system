@@ -8,7 +8,7 @@ namespace Nutrition.Infrastructure.BackgroundTasks
         public void ExecuteCaloriesCalculation(string userName)
         {
             RecurringJob.AddOrUpdate<IMyHubHelper>($"ExecuteCaloriesCalculationAsync-{userName}",
-                  hubHelper => hubHelper.SendData(userName),
+                  hubHelper => hubHelper.SendDataAsync(userName),
                 Cron.Hourly());
         }
     }
