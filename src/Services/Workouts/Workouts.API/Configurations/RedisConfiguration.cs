@@ -1,4 +1,5 @@
-﻿using Workouts.BusinessLogic.Options;
+﻿using Confluent.Kafka;
+using Workouts.BusinessLogic.Options;
 
 namespace Workouts.API.Configurations
 {
@@ -12,6 +13,9 @@ namespace Workouts.API.Configurations
             {
                 redisOptions.Configuration = redisCacheUrl;
             });
+
+            services.Configure<RedisCacheOptions>(
+            configuration.GetSection(RedisCacheOptions.Section));
         }
     }
 }
