@@ -3,6 +3,7 @@ using Identity.Application.Services.Interfaces;
 using Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,17 +19,19 @@ namespace Identity.Application.Services.Implementations
         private readonly IConfiguration _configuration;
         private readonly UserManager<AppUser> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly ILogger<TokenService> _logger;
 
         /// <summary>
         /// Initializes a new instance of the TokenService class.
         /// </summary>
         /// <param name="configuration">The configuration containing JWT settings.</param>
         /// <param name="userManager">The user manager for accessing user information.</param>
-        public TokenService(IConfiguration configuration, UserManager<AppUser> userManager)
+        public TokenService(IConfiguration configuration, UserManager<AppUser> userManager, ILogger<TokenService> logger)
         {
             _configuration = configuration;
             _userManager = userManager;
             _jwtSettings = new JwtSettings(configuration);
+            _logger = logger;
         }
 
         /// <summary>
@@ -60,6 +63,8 @@ namespace Identity.Application.Services.Implementations
                 signingCredentials: creds);
 
             var tokenHandler = new JwtSecurityTokenHandler();
+
+            _logger.LogInformation($"Authentication token created for user {user.UserName}");
 
             return tokenHandler.WriteToken(token);
         }

@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Nutrition.Application.Dtos.ResponseDtos;
 using Nutrition.Application.Exceptions;
 using Nutrition.Application.Helpers;
@@ -10,10 +11,12 @@ namespace Nutrition.Application.Features.Food.Commands.CreateFood
     public class CreateFoodCommandHandler : IRequestHandler<CreateFoodCommand, FoodResponseDto>
     {
         private readonly IFoodRepository _foodRepository;
+        private readonly ILogger<CreateFoodCommandHandler> _logger;
 
-        public CreateFoodCommandHandler(IFoodRepository foodRepository)
+        public CreateFoodCommandHandler(IFoodRepository foodRepository, ILogger<CreateFoodCommandHandler> logger)
         {
             _foodRepository = foodRepository;
+            _logger = logger;
         }
 
         public async Task<FoodResponseDto> Handle(CreateFoodCommand request,
@@ -24,6 +27,8 @@ namespace Nutrition.Application.Features.Food.Commands.CreateFood
 
             if (foundFood is not null)
             {
+                _logger.LogError($"Product {foundFood.Name} already exists");
+
                 throw new AlreadyExistsException(FoodErrorMessages.ProductAlreadyExists);
             }
 
@@ -33,6 +38,8 @@ namespace Nutrition.Application.Features.Food.Commands.CreateFood
             _foodRepository.Create(food);
 
             await _foodRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Product {food.Name} was successfully created");
 
             var foodResponseDto = food.Adapt<FoodResponseDto>();
 

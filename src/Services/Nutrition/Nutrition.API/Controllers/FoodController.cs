@@ -9,6 +9,7 @@ using Nutrition.Application.Features.Food.Commands.DeleteFood;
 using Nutrition.Application.Features.Food.Commands.UpdateFood;
 using Nutrition.Application.Features.Food.Queries.GetAllFood;
 using Nutrition.Application.Features.Food.Queries.GetByNameFood;
+using Nutrition.Application.Features.Users.Commands.CreateUser;
 
 namespace Nutrition.API.Controllers
 {

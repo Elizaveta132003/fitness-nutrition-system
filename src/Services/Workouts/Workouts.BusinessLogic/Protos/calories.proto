@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Workouts.BusinessLogic.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+service CaloriesService {
+	rpc UpdateCalories(UpdateCaloriesRequest) returns (UpdateCaloriesResponse);
+}
+
+message UpdateCaloriesRequest {
+    string userId = 1;
+    double calories = 2;
+    google.protobuf.Timestamp date = 3;
+    bool isCaloriesConsumed = 4;
+}
+
+message UpdateCaloriesResponse {
+    double calories = 1;
+}

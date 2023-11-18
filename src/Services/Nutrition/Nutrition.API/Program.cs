@@ -16,15 +16,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.ConfigureCors(builder.Configuration);
 builder.Services.AddValidatorsFromAssemblyContaining<FoodRequestValidator>();
+builder.Services.ConfigureKafka(builder.Configuration);
 builder.Services.ConfigureMediatR();
 builder.Services.ConfigureServices();
 builder.Services.ConfigureHangfire(builder.Configuration);
 builder.Services.AddScoped<IMyHubHelper, MyHubHelper>();
 builder.Services.AddSignalR();
 builder.Services.ApplyMigrations(builder.Configuration);
+builder.Services.ConfigureDatabaseServices(builder.Configuration);
 builder.Services.AddDbContext<NutritionDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.ConfigureLogger(builder);
 
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
@@ -38,7 +41,7 @@ if (!app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUIOptions =>
     {
-        swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition API v1");
+        swaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Nutrition API");
     });
 }
 
@@ -48,6 +51,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors("CorsPolicy");
+
+app.ApplyMigration();
 
 app.UseHangfireDashboard("/hangfire", new DashboardOptions
 {

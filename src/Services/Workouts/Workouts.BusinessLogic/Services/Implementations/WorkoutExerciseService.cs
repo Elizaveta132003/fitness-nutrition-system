@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Logging;
 using Workouts.BusinessLogic.Dtos.RequestDtos;
 using Workouts.BusinessLogic.Dtos.ResponseDtos;
 using Workouts.BusinessLogic.Exceptions;
@@ -15,13 +16,20 @@ namespace Workouts.BusinessLogic.Services.Implementations
         private readonly IWorkoutExerciseRepository _workoutExerciseRepository;
         private readonly IWorkoutRepository _workoutRepository;
         private readonly IExercisesDiaryRepository _exercisesDiaryRepository;
+        private readonly IUpdateCaloriesClient _updateCaloriesClient;
+        private readonly ILogger<WorkoutExerciseService> _logger;
 
         public WorkoutExerciseService(IWorkoutExerciseRepository workoutExerciseRepository,
-            IWorkoutRepository workoutRepository, IExercisesDiaryRepository exercisesDiaryRepository)
+            IWorkoutRepository workoutRepository,
+            IExercisesDiaryRepository exercisesDiaryRepository,
+            IUpdateCaloriesClient updateCaloriesClient,
+            ILogger<WorkoutExerciseService> logger)
         {
             _workoutExerciseRepository = workoutExerciseRepository;
             _workoutRepository = workoutRepository;
             _exercisesDiaryRepository = exercisesDiaryRepository;
+            _updateCaloriesClient = updateCaloriesClient;
+            _logger = logger;
         }
 
         public async Task<WorkoutExerciseResponseDto> CreateAsync(WorkoutExerciseRequestDto workoutExercise,
@@ -40,6 +48,10 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             await _workoutExerciseRepository.SaveChangesAsync(cancellationToken);
 
+            _logger.LogInformation($"Workout exerise was successfully created");
+
+            await _updateCaloriesClient.UpdateCaloriesAsync(workoutExercise, cancellationToken);
+
             var workoutExerciseResponseDto = createWorkoutExercise.Adapt<WorkoutExerciseResponseDto>();
 
             return workoutExerciseResponseDto;
@@ -53,12 +65,16 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundWorkoutExercise is null)
             {
+                _logger.LogError($"Workout exercise with id {id} not found");
+
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }
 
             _workoutExerciseRepository.Delete(foundWorkoutExercise);
 
             await _workoutExerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Workout exercise with id {id} was successfully deleted");
 
             var workoutExerciseResponseDto = foundWorkoutExercise.Adapt<WorkoutExerciseResponseDto>();
 
@@ -75,8 +91,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (!foundWorkoutExercise.Any())
             {
+                _logger.LogError($"Workout exercises by user id {userId}, date {date} and type {type} not found");
+
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }
+
+            _logger.LogInformation($"Workout exercise by user id {userId}, date {date} and type {type} were successfully received");
 
             var result = foundWorkoutExercise.Adapt<IEnumerable<WorkoutExerciseResponseDto>>();
 
@@ -92,8 +112,12 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (!foundWorkoutExercise.Any())
             {
+                _logger.LogError($"Workout exercises by user id {userId} and date {date} not found");
+
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }
+
+            _logger.LogInformation($"Workout exercise by user id {userId} and date {date} were successfully received");
 
             var result = foundWorkoutExercise.Adapt<IEnumerable<WorkoutExerciseResponseDto>>();
 
@@ -108,12 +132,16 @@ namespace Workouts.BusinessLogic.Services.Implementations
 
             if (foundWorkoutExercise is null)
             {
+                _logger.LogError($"Workout exercise with id {id} not found");
+
                 throw new NotFoundException(WorkoutExerciseErrorMessages.WorkoutExerciseNotFound);
             }
 
             _workoutExerciseRepository.Update(foundWorkoutExercise);
 
             await _workoutExerciseRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"Workout exercise with id {id} was successfully updated");
 
             var workoutExerciseResponseDto = foundWorkoutExercise.Adapt<WorkoutExerciseResponseDto>();
 

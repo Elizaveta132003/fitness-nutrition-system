@@ -1,29 +1,87 @@
 version: '3.4'
 
 services:
+    sqlserver: 
+        container_name: SqlServer
+        image: mcr.microsoft.com/mssql/server:2022-latest
+    
+    zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        container_name: zookeeper
+        
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        container_name: kafka
+        depends_on:
+            - zookeeper
+
+    kafdrop:
+        image: obsidiandynamics/kafdrop:latest
+        container_name: kafdrop
+        depends_on:
+            - kafka  
+
     calories:
         container_name: Calories
         build:
             context: "."
             dockerfile: /Services/Calories/Calories.API/Dockerfile
+        depends_on:
+          - sqlserver
+          - elasticsearch
 
     nutrition:
         container_name: Nutrition
         build:
             context: "."
             dockerfile: /Services/Nutrition/Nutrition.API/Dockerfile
+        depends_on:
+          - sqlserver
 
     workouts:
         container_name: Workouts
         build:
             context: "."
             dockerfile: /Services/Workouts/Workouts.API/Dockerfile
+        depends_on:
+          - sqlserver
+          - zookeeper
+          - kafka 
+          - elasticsearch
 
     identity:
         container_name: Identity
         build:
             context: "."
             dockerfile: /Services/Identity/Identity.API/Dockerfile
+
     reactclient:
         container_name: reactclient
+             
+    mongodb:
+        container_name: Mongodb
+        image: mongo:latest
+        depends_on:
+          - sqlserver
+          - kafka
+          - zookeeper
+          - elasticsearch
+
+    kibana:
+        container_name: kibana
+        image: kibana:8.8.1
+        depends_on:
+        - elasticsearch
+
+    elasticsearch:
+        container_name: elasticsearch
+        image: elasticsearch:8.8.1
         
+    gateway:
+        container_name: Gateway
+        build:
+            context: "."
+            dockerfile: /Services/Gateway/OcelotGateway/Dockerfile
+    redis:
+        container_name: Redis
+        image: redis:latest

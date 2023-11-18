@@ -7,28 +7,32 @@ using Workouts.DataAccess.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
+builder.Services.ConfigureGrpc(builder.Configuration);
+builder.Services.ConfigureCors();
+builder.Services.ConfigureKafka(builder.Configuration);
 builder.Services.AddBusinessLogicService();
 builder.Services.ConfigureDatabaseServices(builder.Configuration);
 builder.Services.AddDbContext<WorkoutDbContext>();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.ConfigureLogger(builder);
+builder.Services.ConfigureRedis(builder.Configuration);
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGenConfiguration();
 builder.Services.AddConfigureAuthentication(builder.Configuration);
 
 var app = builder.Build();
-app.ApplyMigration();
+app.UseCors("CorsPolicy");
 app.UseMiddleware<ExceptionMiddleware>();
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(swaggerUiOptions =>
     {
-        swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Workout API v1");
+        swaggerUiOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Workout API");
     });
 }
 
@@ -38,5 +42,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.ApplyMigration();
 
 app.Run();

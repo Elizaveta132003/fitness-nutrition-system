@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Nutrition.Application.Dtos.ResponseDtos;
 using Nutrition.Application.Exceptions;
 using Nutrition.Application.Helpers;
@@ -12,11 +13,15 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IFoodDiaryRepository _foodDiaryRepository;
+        private readonly ILogger<CreateUserCommandHandler> _logger;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IFoodDiaryRepository foodDiaryRepository)
+        public CreateUserCommandHandler(IUserRepository userRepository,
+            IFoodDiaryRepository foodDiaryRepository,
+            ILogger<CreateUserCommandHandler> logger)
         {
             _userRepository = userRepository;
             _foodDiaryRepository = foodDiaryRepository;
+            _logger = logger;
         }
 
         public async Task<UserResponseDto> Handle(CreateUserCommand request,
@@ -27,6 +32,8 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
 
             if (foundUser is not null)
             {
+                _logger.LogError($"User {request.UserRequestDto.Username} not found");
+
                 throw new AlreadyExistsException(UserErrorMessages.UserAlreadyExists);
             }
 
@@ -44,6 +51,8 @@ namespace Nutrition.Application.Features.Users.Commands.CreateUser
             _foodDiaryRepository.Create(foodDiary);
 
             await _foodDiaryRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation($"User {user.Username} and food diry with id {foodDiary.Id} were successfully created");
 
             var userResponseDto = user.Adapt<UserResponseDto>();
 
